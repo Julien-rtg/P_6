@@ -28,13 +28,21 @@ class Figure
     #[ORM\OneToMany(mappedBy: 'id_figure', targetEntity: Commentaire::class)]
     private Collection $commentaires;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'figures')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?utilisateur $id_utilisateur = null;
+    private ?Utilisateur $id_utilisateur = null;
+
+    #[ORM\OneToMany(mappedBy: 'id_figure', targetEntity: VideoFigure::class)]
+    private Collection $videoFigures;
+
+    #[ORM\OneToMany(mappedBy: 'id_figure', targetEntity: PhotoFigure::class)]
+    private Collection $photoFigures;
 
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->videoFigures = new ArrayCollection();
+        $this->photoFigures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,15 +116,76 @@ class Figure
         return $this;
     }
 
-    public function getIdUtilisateur(): ?utilisateur
+    public function getIdUtilisateur(): ?Utilisateur
     {
         return $this->id_utilisateur;
     }
 
-    public function setIdUtilisateur(?utilisateur $id_utilisateur): self
+    public function setIdUtilisateur(?Utilisateur $id_utilisateur): self
     {
         $this->id_utilisateur = $id_utilisateur;
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, VideoFigure>
+     */
+    public function getVideoFigures(): Collection
+    {
+        return $this->videoFigures;
+    }
+
+    public function addVideoFigure(VideoFigure $videoFigure): self
+    {
+        if (!$this->videoFigures->contains($videoFigure)) {
+            $this->videoFigures->add($videoFigure);
+            $videoFigure->setIdFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideoFigure(VideoFigure $videoFigure): self
+    {
+        if ($this->videoFigures->removeElement($videoFigure)) {
+            // set the owning side to null (unless already changed)
+            if ($videoFigure->getIdFigure() === $this) {
+                $videoFigure->setIdFigure(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PhotoFigure>
+     */
+    public function getPhotoFigures(): Collection
+    {
+        return $this->photoFigures;
+    }
+
+    public function addPhotoFigure(PhotoFigure $photoFigure): self
+    {
+        if (!$this->photoFigures->contains($photoFigure)) {
+            $this->photoFigures->add($photoFigure);
+            $photoFigure->setIdFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhotoFigure(PhotoFigure $photoFigure): self
+    {
+        if ($this->photoFigures->removeElement($photoFigure)) {
+            // set the owning side to null (unless already changed)
+            if ($photoFigure->getIdFigure() === $this) {
+                $photoFigure->setIdFigure(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

@@ -1,0 +1,12 @@
+.imgHome{
+    width: 100%;
+}
+
+.width90Auto{
+    width: 90%;
+    margin: auto;
+}
+.content figure{
+    margin-left: 0;
+    margin-right: 0;
+}
