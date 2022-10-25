@@ -16,9 +16,9 @@ class PhotoFigure
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'photoFigures')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?figure $id_figure = null;
+    private ?Figure $id_figure = null;
 
     public function getId(): ?int
     {
@@ -37,12 +37,12 @@ class PhotoFigure
         return $this;
     }
 
-    public function getIdFigure(): ?figure
+    public function getIdFigure(): ?Figure
     {
         return $this->id_figure;
     }
 
-    public function setIdFigure(?figure $id_figure): self
+    public function setIdFigure(?Figure $id_figure): self
     {
         $this->id_figure = $id_figure;
 

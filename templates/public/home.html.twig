@@ -2,6 +2,38 @@
 
 {% block content %}
 
+    <img class="imgHome" src="{{ asset('assets/img/home.jpg') }}">
 
+    <div class="columns is-multiline width90Auto">
+        {# je boucle sur toutes mes figures #}
+        {% for figure in figures %}
+            <div class="column is-one-fifth">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            {# je boucle sur les photos de mes figures #}
+                            {# {% for photo in figure.photoFigures %}
+                                {{photo.path}}
+                            {% endfor %} #}
+                            <img src="/assets/img/{{figure.photoFigures[0].path}}">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4">{{figure.nom}}</p>
+                            </div>
+                            <div class="media-right">
+                                <a class="mr-5" href=""><i class="fa-solid fa-pen"></i></a>
+                                <a href=""><i class="fa-solid fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        
+    </div>
+    
 
 {% endblock %}

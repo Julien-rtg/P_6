@@ -42,15 +42,13 @@ class FigureRepository extends ServiceEntityRepository
 //    /**
 //     * @return Figure[] Returns an array of Figure objects
 //     */
-//    public function findByExampleField($value): array
+//    public function findAllRelation(): array
 //    {
 //        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
+//             ->select('f')
+//             ->innerJoin('f.id_figure', 'p')
+//             ->getQuery()
+//             ->getResult()
 //        ;
 //    }
 

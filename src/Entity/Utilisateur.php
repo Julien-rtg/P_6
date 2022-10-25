@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
@@ -30,6 +32,18 @@ class Utilisateur
 
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
+
+    #[ORM\OneToMany(mappedBy: 'id_utilisateur', targetEntity: Commentaire::class)]
+    private Collection $commentaires;
+
+    #[ORM\OneToMany(mappedBy: 'id_utilisateur', targetEntity: Figure::class)]
+    private Collection $figures;
+
+    public function __construct()
+    {
+        $this->commentaires = new ArrayCollection();
+        $this->figures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +118,66 @@ class Utilisateur
     public function setPhoto(string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setIdUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getIdUtilisateur() === $this) {
+                $commentaire->setIdUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Figure>
+     */
+    public function getFigures(): Collection
+    {
+        return $this->figures;
+    }
+
+    public function addFigure(Figure $figure): self
+    {
+        if (!$this->figures->contains($figure)) {
+            $this->figures->add($figure);
+            $figure->setIdUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFigure(Figure $figure): self
+    {
+        if ($this->figures->removeElement($figure)) {
+            // set the owning side to null (unless already changed)
+            if ($figure->getIdUtilisateur() === $this) {
+                $figure->setIdUtilisateur(null);
+            }
+        }
 
         return $this;
     }
