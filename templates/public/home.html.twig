@@ -11,17 +11,13 @@
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-4by3">
-                            {# je boucle sur les photos de mes figures #}
-                            {# {% for photo in figure.photoFigures %}
-                                {{photo.path}}
-                            {% endfor %} #}
                             <img src="/assets/img/{{figure.photoFigures[0].path}}">
                         </figure>
                     </div>
                     <div class="card-content">
                         <div class="media">
                             <div class="media-content">
-                                <p class="title is-4">{{figure.nom}}</p>
+                                <a class="title is-4" href="{{ path('tricks', {id: figure.id, slug: figure.slug}) }}">{{figure.nom}}</a>
                             </div>
                             <div class="media-right">
                                 <a class="mr-5" href=""><i class="fa-solid fa-pen"></i></a>

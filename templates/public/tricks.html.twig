@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block content %}
+    <div class="photoTrickSpotlight">
+        <img class="width100" src="/assets/img/{{figure.photoFigures[0].path}}">
+    </div>
+
+    <div class="columns is-multiline width90Auto">
+        {# je boucle sur les photos de mes figures #}
+        {% for photo in figure.photoFigures %}
+            <div class="photoTrick column is-2">
+                <img src="/assets/img/{{photo.path}}">
+            </div>
+        {% endfor %}
+
+        {# je boucle sur les videos de mes figures #}
+        {% for video in figure.videoFigures %}
+            <div class="videoTrick column is-2">
+                <iframe src="{{video.path}}" title="YouTube video player" 
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                </iframe>
+            </div>
+        {% endfor %}
+    
+    </div>
+
+    
+
+{% endblock %}
