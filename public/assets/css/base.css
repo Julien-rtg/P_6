@@ -22,3 +22,7 @@
     margin-left: 0;
     margin-right: 0;
 }
+.dateContainerFigure{
+    display: flex;
+    justify-content: center;
+}
