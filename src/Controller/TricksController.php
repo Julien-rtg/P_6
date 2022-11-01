@@ -15,7 +15,9 @@ class TricksController extends AbstractController
     public function tricks(string $id, FigureRepository $figureRepository): Response
     {
         $figure = $figureRepository->find($id);
-        
+        $matchingGroupeFigure = [1 => 'Grabs', 2 => 'Rotations', 3 => 'Flips'];
+        $figure->stringGroupeFigure = $matchingGroupeFigure[$figure->getGroupeFigure()];
+
         return $this->render('public/tricks.html.twig', [
             'figure' => $figure
         ]);
