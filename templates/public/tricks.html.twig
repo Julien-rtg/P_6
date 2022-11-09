@@ -55,17 +55,16 @@
                     </div>
                 </div>
             {{ form_end(form) }}
-            {# <input class="input column is-6 mr-3" type="text" name="comment" id="comment">
-            <button class="button" type="submit">Leave a comment</button> #}
+
         </form>
         <hr>
     </div>
     
     <div class="container">
-        <div class="columns is-centered">
+        <div class="columns is-multiline is-centered">
             <div class="column is-10">
                 {# je boucle sur les commentaires de ma figure #}
-                {% for com in figure.commentaires|reverse %}
+                {% for com in figure.commentaires|reverse|slice(firstCom,lastCom) %}
                     <div class="commentaires mb-3">
                         <img class="avatarCom" src="/assets/img/{{com.user.photo}}">
 
@@ -87,6 +86,33 @@
                 {% endfor %}
             </div>
         
+            <div class="column is-10">
+                <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                    {% if currentPage == 1 %}
+                        <a class="pagination-previous" href="{{url}}?com={{currentPage-1}}" disabled>Précédent</a>
+                    {% else %}
+                        <a class="pagination-previous" href="{{url}}?com={{currentPage-1}}">Précédent</a>
+                    {% endif %}
+                    {% if currentPage == pages %}
+                        <a class="pagination-next" href="{{url}}?com={{currentPage+1}}" disabled>Suivant</a>
+                    {% else %}
+                        <a class="pagination-next" href="{{url}}?com={{currentPage+1}}">Suivant</a>
+                    {% endif %}
+                    <ul class="pagination-list">
+                        {% if currentPage == 1 %}
+                            <li><a class="pagination-link mt-1" aria-label="Goto page 1" disabled>1</a></li>
+                        {% else %}
+                            <li><a href="{{url}}?com=1" class="pagination-link mt-1" aria-label="Goto page 1">1</a></li>
+                        {% endif %}
+                        <li><a href="{{url}}?com={{currentPage}}" class="pagination-link is-current" aria-label="Goto page 1">{{currentPage}}</a></li>
+                        {% if currentPage == pages %}
+                            <li><a class="pagination-link" disabled>{{pages}}</a></li>
+                        {% else %}
+                            <li><a href="{{url}}?com={{pages}}" class="pagination-link">{{pages}}</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
         </div>
 
 
