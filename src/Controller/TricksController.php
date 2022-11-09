@@ -27,6 +27,9 @@ class TricksController extends AbstractController
         $matchingGroupeFigure = [1 => 'Grabs', 2 => 'Rotations', 3 => 'Flips'];
         $figure->stringGroupeFigure = $matchingGroupeFigure[$figure->getGroupeFigure()];
         
+        $url = $request->getPathInfo();
+        $pagination = $this->pagination($figure, $request);
+
         foreach($figure->getCommentaires() as $com){ // on recupere l'utilisateur du commentaire
             $com->user = $userRepository->find($com->getIdUtilisateur()->getId());
         }
@@ -51,7 +54,37 @@ class TricksController extends AbstractController
         }
         return $this->render('public/tricks.html.twig', [
             'figure' => $figure,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'firstCom' => $pagination[0],
+            'lastCom' => $pagination[1],
+            'pages' => $pagination[2],
+            'currentPage' => $pagination[3],
+            'url' => $url
         ]);
     }
+
+
+    private function pagination(?figure $figure, Request $request){ // pagination des commentaires
+        // dd($figure->getCommentaires());
+        $currentPage = $request->query->get('com');
+        if (!isset($currentPage)) { // ON RECUP LA PAGE
+            $currentPage = '1';
+        }
+        $countCom = 0;
+        foreach($figure->getCommentaires() as $com){ // on compte chaque commentaire
+            $countCom++;
+        }
+        
+        // On détermine le nombre d'articles par page
+        $perPage = 4;
+        // On calcule le nombre de pages total
+        $pages = ceil($countCom / $perPage);
+        $pages = intval($pages);
+
+        $firstCom = ((int)$currentPage * $perPage) - $perPage;
+        $lastCom = $firstCom + $perPage;
+        // dd($lastCom);
+        return [$firstCom, $lastCom, $pages, $currentPage];
+    }
+
 }
