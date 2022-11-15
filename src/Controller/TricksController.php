@@ -11,6 +11,7 @@ use App\Repository\UtilisateurRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,16 +27,15 @@ class TricksController extends AbstractController
         $figure = $figureRepository->find($id);
         $matchingGroupeFigure = [1 => 'Grabs', 2 => 'Rotations', 3 => 'Flips'];
         $figure->stringGroupeFigure = $matchingGroupeFigure[$figure->getGroupeFigure()];
-        
+
         $url = $request->getPathInfo();
-        $pagination = $this->pagination($figure, $request);
+        $fullUrl = $request->getUri();
 
         foreach($figure->getCommentaires() as $com){ // on recupere l'utilisateur du commentaire
             $com->user = $userRepository->find($com->getIdUtilisateur()->getId());
         }
 
         $form = $this->createForm(CommentaireType::class, $commentaire);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
@@ -52,39 +52,33 @@ class TricksController extends AbstractController
 
             return $this->redirect($request->getUri()); // refresh
         }
-        return $this->render('public/tricks.html.twig', [
-            'figure' => $figure,
-            'form' => $form->createView(),
-            'firstCom' => $pagination[0],
-            'lastCom' => $pagination[1],
-            'pages' => $pagination[2],
-            'currentPage' => $pagination[3],
-            'url' => $url
-        ]);
+
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
+            $reset = $request->request->get('reset');
+            if($reset == 'true'){
+                $lastCom = 5;
+            }else {
+                $lastCom = $request->request->get('lastCom');
+                $lastCom = intval($lastCom)+5;
+            }
+            return new JsonResponse([
+                'content' => $this->renderView('elements/comments.html.twig', [
+                    'figure' => $figure,
+                    'firstCom' => 0,
+                    'lastCom' => $lastCom,
+                ])
+            ]);
+        } else { 
+            return $this->render('public/tricks.html.twig', [
+                'figure' => $figure,
+                'form' => $form->createView(),
+                'firstCom' => 0,
+                'lastCom' => 5,
+                'url' => $url,
+                'fullUrl' => $fullUrl
+            ]);
+        }
     }
 
-
-    private function pagination(?figure $figure, Request $request){ // pagination des commentaires
-        // dd($figure->getCommentaires());
-        $currentPage = $request->query->get('com');
-        if (!isset($currentPage)) { // ON RECUP LA PAGE
-            $currentPage = '1';
-        }
-        $countCom = 0;
-        foreach($figure->getCommentaires() as $com){ // on compte chaque commentaire
-            $countCom++;
-        }
-        
-        // On détermine le nombre d'articles par page
-        $perPage = 4;
-        // On calcule le nombre de pages total
-        $pages = ceil($countCom / $perPage);
-        $pages = intval($pages);
-
-        $firstCom = ((int)$currentPage * $perPage) - $perPage;
-        $lastCom = $firstCom + $perPage;
-        // dd($lastCom);
-        return [$firstCom, $lastCom, $pages, $currentPage];
-    }
 
 }

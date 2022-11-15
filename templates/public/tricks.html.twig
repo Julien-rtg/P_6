@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
-
 {% block content %}
     <div class="photoTrickSpotlight">
         <img class="width100" src="/assets/img/{{figure.photoFigures[0].path}}">
@@ -31,9 +29,9 @@
     </div>
 
     <div class="container dateContainerFigure mt-6">
-        <p class="mr-4"><span class="has-text-weight-bold">Date création :</span>  {{figure.dateCreation|date("d/m/Y")}}</p>
-        <p class="mr-4"><span class="has-text-weight-bold">Date modification :</span>  {{figure.dateModification|date("d/m/Y")}}</p>
-        <p class="mr-4"><span class="has-text-weight-bold">Groupe de figure :</span>  {{figure.stringGroupeFigure}}</p>
+        <p class="mr-4 button"><span class="has-text-weight-bold mr-1">Date création :</span>  {{figure.dateCreation|date("d/m/Y")}}</p>
+        <p class="mr-4 button"><span class="has-text-weight-bold mr-1">Date modification :</span>  {{figure.dateModification|date("d/m/Y")}}</p>
+        <p class="mr-4 button"><span class="has-text-weight-bold mr-1">Groupe de figure :</span>  {{figure.stringGroupeFigure}}</p>
     </div>
     <div class="container">
         <hr>
@@ -62,57 +60,65 @@
     
     <div class="container">
         <div class="columns is-multiline is-centered">
-            <div class="column is-10">
-                {# je boucle sur les commentaires de ma figure #}
-                {% for com in figure.commentaires|reverse|slice(firstCom,lastCom) %}
-                    <div class="commentaires mb-3">
-                        <img class="avatarCom" src="/assets/img/{{com.user.photo}}">
-
-                        <div class="commentaire">
-                            <p class="mt-4">{{com.contenu}}</p>
-                            <div class="footerCommentaire">
-                                <div class="is-flex">
-                                    <p class="mr-2 has-text-weight-bold zeroNineRem">{{com.user.nom}}</p>
-                                    <p class="has-text-weight-bold zeroNineRem">{{com.user.prenom}}</p>
-                                </div>
-                                <div>
-                                    <p class="has-text-weight-bold zeroNineRem">{{com.date|date("d/m/Y")}}</p>
-                                </div>
-                            </div>
-                            
-                        </div>
-
+            <div class="column is-10 has-text-centered">
+                <div id="comments">
+                    <div id="commentsChild">
+                        {% include 'elements/comments.html.twig' %}
                     </div>
-                {% endfor %}
+                </div>
+                <div class="btnComments">
+                    <div class="loadMoreDiv">
+                        <div class="button" id="loadMore">Load more</div>
+                    </div>
+                    <div>
+                        <div class="button" id="resetComments">
+                            <i  class="fa-sharp fa-solid fa-chevron-up"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-        
-            <div class="column is-10">
-                <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-                    {% if currentPage == 1 %}
-                        <a class="pagination-previous" href="{{url}}?com={{currentPage-1}}" disabled>Précédent</a>
-                    {% else %}
-                        <a class="pagination-previous" href="{{url}}?com={{currentPage-1}}">Précédent</a>
-                    {% endif %}
-                    {% if currentPage == pages %}
-                        <a class="pagination-next" href="{{url}}?com={{currentPage+1}}" disabled>Suivant</a>
-                    {% else %}
-                        <a class="pagination-next" href="{{url}}?com={{currentPage+1}}">Suivant</a>
-                    {% endif %}
-                    <ul class="pagination-list">
-                        {% if currentPage == 1 %}
-                            <li><a class="pagination-link mt-1" aria-label="Goto page 1" disabled>1</a></li>
-                        {% else %}
-                            <li><a href="{{url}}?com=1" class="pagination-link mt-1" aria-label="Goto page 1">1</a></li>
-                        {% endif %}
-                        <li><a href="{{url}}?com={{currentPage}}" class="pagination-link is-current" aria-label="Goto page 1">{{currentPage}}</a></li>
-                        {% if currentPage == pages %}
-                            <li><a class="pagination-link" disabled>{{pages}}</a></li>
-                        {% else %}
-                            <li><a href="{{url}}?com={{pages}}" class="pagination-link">{{pages}}</a></li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+            <script language="JavaScript" type="text/javascript">
+                $(document).ready(function(){
+                    $("#loadMore").on("click", function(event){  
+                        $.ajax({  
+                        url:        '/tricks/details/1-Mute',  
+                        type:       'POST',   
+                        data: jQuery.param({ lastCom: document.getElementById("commentsChild").childElementCount, reset: false}) ,
+                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                        async:      true,  
+                        
+                        success: function(data, status) {
+                            $('#commentsChild').remove();
+                            let div = document.createElement("div");
+                            div.setAttribute('id', 'commentsChild');
+                            $('#comments')[0].appendChild(div);
+                            $('#commentsChild').append(data.content);
+                            
+                        }
+                        });  
+                    });
+
+                    $("#resetComments").on("click", function(event){  
+                        $.ajax({  
+                        url:        '/tricks/details/1-Mute',  
+                        type:       'POST',   
+                        data: jQuery.param({ reset: true}) ,
+                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                        async:      true,  
+                        
+                        success: function(data, status) {
+                            $('#commentsChild').remove();
+                            let div = document.createElement("div");
+                            div.setAttribute('id', 'commentsChild');
+                            $('#comments')[0].appendChild(div);
+                            $('#commentsChild').append(data.content);
+                            
+                        }
+                        });  
+                    });
+                });  
+            </script>
         </div>
 
 

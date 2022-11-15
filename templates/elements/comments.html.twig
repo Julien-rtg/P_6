@@ -1,0 +1,19 @@
+{# je boucle sur les commentaires de ma figure #}
+{% for com in figure.commentaires|reverse|slice(firstCom,lastCom) %}
+    <div class="commentaires mb-3">
+        <img class="avatarCom" src="/assets/img/{{com.user.photo}}">
+
+        <div class="commentaire">
+            <p class="mt-4">{{com.contenu}}</p>
+            <div class="footerCommentaire">
+                <div class="is-flex">
+                    <p class="mr-2 has-text-weight-bold zeroNineRem">{{com.user.nom}}</p>
+                    <p class="has-text-weight-bold zeroNineRem">{{com.user.prenom}}</p>
+                </div>
+                <div>
+                    <p class="has-text-weight-bold zeroNineRem">{{com.date|date("d/m/Y")}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
