@@ -52,3 +52,16 @@
     width: 60px;
     border-radius: 50%;
 }
+#loadMore{
+    width: 200px;
+    margin-left: 10rem;
+}
+.loadMoreDiv{
+    display: flex;
+    width: 92%;
+    justify-content: center;
+}
+.btnComments{
+    display: flex;
+    justify-content: center;
+}
