@@ -20,6 +20,11 @@ class PhotoFigure
     #[ORM\JoinColumn(nullable: false)]
     private ?Figure $id_figure = null;
 
+    /**
+     * @var UploadedFile
+     */
+    protected $file;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -33,6 +38,18 @@ class PhotoFigure
     public function setPath(string $path): self
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
 
         return $this;
     }
