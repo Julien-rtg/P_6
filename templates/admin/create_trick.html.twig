@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    <h2 class="title">Ajout d'un trick</h2>
+
+    {{ form_start(form) }}
+        <div class="my-custom-class-for-errors">
+            {{ form_errors(form) }}
+        </div>
+
+        <div class="columns is-multiline is-centered">
+            <div class="">
+                {{ form_widget(form.nom, {'attr' : {'class': 'input', 'placeholder' : 'Nom de la figure'}} ) }}
+            </div>
+            <div class="">
+                {{ form_widget(form.description, {'attr' : {'class': 'input', 'placeholder' : 'Description'}} ) }}
+            </div>
+            <div class="">
+                {{ form_widget(form.groupe_figure, {'attr' : {'class': 'input', 'placeholder' : 'Description'}} ) }}
+            </div>
+            <div class="">
+                {% for tag in form.photoFigures %}
+                    {{ form_widget(tag.file, {'attr' : {'class': 'input'}} ) }}
+                {% endfor %}
+                
+            </div>
+            <div class="" data-prototype="{{ form_widget(form.videoFigures.vars.prototype)|e('html_attr') }}"
+                data-index="{{ form.videoFigures|length }}">
+                {# {% for tag in form.videoFigures %}
+                    {{ form_widget(tag.path, {'attr' : {'class': 'input', 'placeholder' : 'Video de la figure'}} ) }}
+                {% endfor %} #}
+            </div>
+            <div class="">
+                {{ form_row(form.save, { 'label': 'Enregistrer', 'attr' : {'class' : 'button'} }) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
+    
+
+
+{% endblock %}
