@@ -29,12 +29,14 @@ class TrickType extends AbstractType
             ->add('photoFigures', CollectionType::class, [
                 'entry_type' => PhotoFigureType::class,
                 'entry_options' => ['label' => false],
-                'allow_add' => true
+                'allow_add' => true,
+                'allow_delete' => true
             ])
             ->add('videoFigures', CollectionType::class, [
                 'entry_type' => VideoFigureType::class,
                 'entry_options' => ['label' => false],
-                'allow_add' => true
+                'allow_add' => true,
+                'allow_delete' => true
             ])
             ->add('save', SubmitType::class)
             // ->add('date_creation')

@@ -23,13 +23,21 @@
                 {% for tag in form.photoFigures %}
                     {{ form_widget(tag.file, {'attr' : {'class': 'input'}} ) }}
                 {% endfor %}
-                
+                <div class="tagsPhoto" data-prototype="{{ form_widget(form.photoFigures.vars.prototype)|e('html_attr') }}"
+                    data-index="{{ form.photoFigures|length }}">
+                </div>
+                <button type="button" class="add_item_link button" data-collection-holder-class="tagsPhoto">Ajout Photo</button>
             </div>
-            <div class="" data-prototype="{{ form_widget(form.videoFigures.vars.prototype)|e('html_attr') }}"
-                data-index="{{ form.videoFigures|length }}">
-                {# {% for tag in form.videoFigures %}
+            <div class="">
+                {% for tag in form.videoFigures %}
                     {{ form_widget(tag.path, {'attr' : {'class': 'input', 'placeholder' : 'Video de la figure'}} ) }}
-                {% endfor %} #}
+                {% endfor %}
+                
+                <div class="tagsVideo" data-prototype="{{ form_widget(form.videoFigures.vars.prototype)|e('html_attr') }}"
+                    data-index="{{ form.videoFigures|length }}">
+                </div>
+                
+                <button type="button" class="add_item_link button" data-collection-holder-class="tagsVideo">Ajout vidéo</button>
             </div>
             <div class="">
                 {{ form_row(form.save, { 'label': 'Enregistrer', 'attr' : {'class' : 'button'} }) }}
@@ -37,6 +45,5 @@
         </div>
     {{ form_end(form) }}
     
-
 
 {% endblock %}
