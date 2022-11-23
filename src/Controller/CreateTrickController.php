@@ -41,36 +41,37 @@ class CreateTrickController extends AbstractController
             $datas = $form->getData();
             // dd($datas);
             // ON INSERE EN PREMIER LA FIGURE POUR AVOIR L'ID DE LA FIGURE POUR LES PHOTOS ET VIDEOS
-            // $figure2->setNom($datas->getNom());
-            // $figure2->setGroupeFigure($datas->getGroupeFigure());
-            // $figure2->setDescription($datas->getDescription());
-            // $figure2->setDateCreation(new DateTime());
-            // $figure2->setDateModification(new DateTime());
-            // $figure2->setIdUtilisateur($user);
+            $figure2->setNom($datas->getNom());
+            $figure2->setGroupeFigure($datas->getGroupeFigure());
+            $figure2->setDescription($datas->getDescription());
+            $figure2->setDateCreation(new DateTime());
+            $figure2->setDateModification(new DateTime());
+            $figure2->setIdUtilisateur($user);
 
-            // $em = $doctrine->getManager();
-            // $em->persist($figure2);
-            // $em->flush();
+            $em = $doctrine->getManager();
+            $em->persist($figure2);
+            $em->flush();
             
-            // $files = $figure->getPhotoFigures();
-            // foreach ($files as $file) {
-            //     $attachment = $file->getFile(); // This is the file
-            //     $photo->setPath($fileUploader->upload($attachment));
-            // }
-            // $photo->setIdFigure($figure2);
-            // $em->persist($photo);
-            // $em->flush();
+            $files = $figure->getPhotoFigures();
+            foreach ($files as $file) {
+                $attachment = $file->getFile(); // This is the file
+                $file->setPath($fileUploader->upload($attachment));
+                $file->setIdFigure($figure2);
+                $em->persist($file);
+                $em->flush();
+            }
+            // dd($files);
 
             $videos = $figure->getVideoFigures();
             foreach ($videos as $vid) {
                 preg_match('/src="([^"]+)"/', $vid->getPath(), $match);
                 $url = $match[1];
-                $video->setPath($url);
-                $video->setIdFigure($figure2);
+                $vid->setPath($url);
+                $vid->setIdFigure($figure2);
+                $em->persist($vid);
+                $em->flush();
             }
             // dd($videos);
-            // $em->persist($video);
-            // $em->flush();
 
             return $this->redirect($request->getUri()); // refresh
         }
