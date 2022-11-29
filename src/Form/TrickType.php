@@ -30,13 +30,15 @@ class TrickType extends AbstractType
                 'entry_type' => PhotoFigureType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
+                'error_bubbling' => false,
             ])
             ->add('videoFigures', CollectionType::class, [
                 'entry_type' => VideoFigureType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
+                'error_bubbling' => false,
             ])
             ->add('save', SubmitType::class)
             // ->add('date_creation')
