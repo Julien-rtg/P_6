@@ -2,48 +2,80 @@
 
 {% block content %}
 
-    <h2 class="title">Ajout d'un trick</h2>
+    <section class="section">
 
-    {{ form_start(form) }}
-        <div class="my-custom-class-for-errors">
-            {{ form_errors(form) }}
-        </div>
+        <h2 class="title">Ajout d'un trick</h2>
 
-        <div class="columns is-multiline is-centered">
-            <div class="">
-                {{ form_widget(form.nom, {'attr' : {'class': 'input', 'placeholder' : 'Nom de la figure'}} ) }}
-            </div>
-            <div class="">
-                {{ form_widget(form.description, {'attr' : {'class': 'input', 'placeholder' : 'Description'}} ) }}
-            </div>
-            <div class="">
-                {{ form_widget(form.groupe_figure, {'attr' : {'class': 'input', 'placeholder' : 'Description'}} ) }}
-            </div>
-            <div class="">
-                {% for tag in form.photoFigures %}
-                    {{ form_widget(tag.file, {'attr' : {'class': 'input'}} ) }}
-                {% endfor %}
-                <div class="tagsPhoto" data-prototype="{{ form_widget(form.photoFigures.vars.prototype)|e('html_attr') }}"
-                    data-index="{{ form.photoFigures|length }}">
+        {{ form_start(form) }}
+            {# <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div> #}
+
+            <div class="columns is-multiline is-centered">
+                <div class="column is-4">
+                    {{ form_widget(form.nom, {'attr' : {'class': 'input', 'placeholder' : 'Nom de la figure'}} ) }}
+                    {% if form.nom.vars['errors']|length > 0 %}
+                        {% for error in form.nom.vars['errors'] %}
+                            <span class="tag is-danger">Le nom de cette figure existe déjà</span>
+                        {% endfor %}
+                    {% endif %}
                 </div>
-                <button type="button" class="add_item_link button" data-collection-holder-class="tagsPhoto">Ajout Photo</button>
-            </div>
-            <div class="">
-                {% for tag in form.videoFigures %}
-                    {{ form_widget(tag.path, {'attr' : {'class': 'input', 'placeholder' : 'Video de la figure'}} ) }}
-                {% endfor %}
-                
-                <div class="tagsVideo" data-prototype="{{ form_widget(form.videoFigures.vars.prototype)|e('html_attr') }}"
-                    data-index="{{ form.videoFigures|length }}">
+                <div class="column is-4">
+                    {{ form_widget(form.description, {'attr' : {'class': 'input', 'placeholder' : 'Description'}} ) }}
                 </div>
-                
-                <button type="button" class="add_item_link button" data-collection-holder-class="tagsVideo">Ajout vidéo</button>
+                <div class="column is-4">
+                    <div class="select width100">
+                        {{ form_widget(form.groupe_figure, {'attr' : {'class':'width100', 'placeholder' : 'Description'}} ) }}
+                    </div>
+                </div>
+                <div class="column is-6">
+                    {% for tag in form.photoFigures %}
+                        {{ form_widget(tag.file, {'attr' : {'class': 'input'}} ) }}
+                        {% if form.photoFigures.vars['errors']|length > 0 %}
+                            {% for error in form.photoFigures.vars['errors'] %}
+                                {# je recupere l'index de la boucle de mes erreurs et je regarde si le message(index de l'erreur) est l'index de ma boucle alors j'affiche si oui #}
+                                {% if (loop.parent.loop.index)-1 == error.message %} 
+                                    <span id="error_photo_{{loop.parent.loop.index-1}}" class="tag is-danger">Extensions jpeg/jpg ou png autorisés</span><br>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if loop.index != 1 %}
+                            <button id="{{(loop.index)-1}}" class="button is-small is-warning mt-3 tricks_delete_photo">Supprimer cette photo</button>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="tagsPhoto" data-prototype="{{ form_widget(form.photoFigures.vars.prototype)|e('html_attr') }}"
+                        data-index="{{ form.photoFigures|length }}">
+                    </div>
+                    <button type="button" class="add_item_link button is-info is-small mt-2" data-collection-holder-class="tagsPhoto">Ajout Photo</button>
+                </div>
+                <div class="column is-6">
+                    {% for tag in form.videoFigures %}
+                        {{ form_widget(tag.path, {'attr' : {'class': 'input', 'placeholder' : 'Video de la figure'}} ) }}
+                        {% if form.videoFigures.vars['errors']|length > 0 %}
+                            {% for error in form.videoFigures.vars['errors'] %}
+                                {# je recupere l'index de la boucle de mes erreurs et je regarde si le message(index de l'erreur) est l'index de ma boucle alors j'affiche si oui #}
+                                {% if (loop.parent.loop.index)-1 == error.message %} 
+                                    <span id="error_{{loop.parent.loop.index-1}}" class="tag is-danger">Veuillez insérer une balise de type embed</span><br>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if loop.index > 1 %}
+                            <button id="{{(loop.index)-1}}" class="button is-small is-warning mt-3 tricks_delete">Supprimer cette vidéo</button>
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="tagsVideo" data-prototype="{{ form_widget(form.videoFigures.vars.prototype)|e('html_attr') }}"
+                        data-index="{{ form.videoFigures|length }}">
+                    </div>
+                    
+                    <button type="button" class="add_item_link button is-info is-small mt-2" data-collection-holder-class="tagsVideo">Ajout vidéo</button>
+                </div>
+                <div class="column is-12">
+                    {{ form_row(form.save, { 'label': 'Enregistrer', 'attr' : {'class' : 'button is-success'} }) }}
+                </div>
             </div>
-            <div class="">
-                {{ form_row(form.save, { 'label': 'Enregistrer', 'attr' : {'class' : 'button'} }) }}
-            </div>
-        </div>
-    {{ form_end(form) }}
+        {{ form_end(form) }}
     
+    </section>
 
 {% endblock %}
