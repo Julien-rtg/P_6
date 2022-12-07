@@ -78,3 +78,52 @@ document.querySelectorAll('.tricks_delete').forEach(btn => {
 document.querySelectorAll('.tricks_delete_photo').forEach(btn => {
     btn.addEventListener("click", deleteFormInputPhoto)
 });
+
+
+// Function to open the modal
+const openModal = (item) => {
+    // Add is-active class on the modal
+    document.getElementById(item).classList.add("is-active");
+}
+
+// Function to close the modal
+const closeModal = (item) => {
+    document.getElementById(item).classList.remove("is-active");
+}
+
+// Add event listeners to close the modal
+// whenever user click outside modal
+document.querySelectorAll(".modal-background").forEach(($el) => {
+    const $modal = $el.closest(".modal");
+    $el.addEventListener("click", () => {
+        // Remove the is-active class from the modal
+        $modal.classList.remove("is-active");
+    });
+});
+
+const changePreviewImage = (path, id, id_figure) => {
+    let previewImage = document.getElementById('previewImage');
+    let containerPreviewImage = document.getElementById('containerPreviewImage');
+
+    const item = document.createElement('img');
+    item.src = path;
+    item.id = 'previewImage';
+    item.classList.add('width100');
+    previewImage.remove();
+
+    containerPreviewImage.appendChild(item);
+
+    closeModal('modalPreviewImage');
+
+    $.ajax({
+        type: "POST",
+        url: '/tricks/editMainPicture/'+id,
+        data: JSON.stringify(id_figure),
+        contentType: 'application/json',
+        success: function () {
+            alert("Image à la une modifié avec succès");
+        },
+    });
+
+
+}

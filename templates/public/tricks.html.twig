@@ -2,7 +2,11 @@
 
 {% block content %}
     <div class="photoTrickSpotlight">
-        <img class="width100" src="/assets/img/{{figure.photoFigures[0].path}}">
+        {% for photo in figure.photoFigures %}
+            {%  if photo.preview %}
+                <img class="width100" src="/assets/img/{{photo.path}}">
+            {% endif %}
+        {% endfor %}
     </div>
 
     <div class="columns is-multiline width90Auto">
@@ -43,7 +47,6 @@
                 <div class="my-custom-class-for-errors">
                     {{ form_errors(form) }}
                 </div>
-
                 <div class="columns is-centered">
                     <div class="column is-6">
                         {{ form_widget(form.contenu, {'attr' : {'class': 'input', 'placeholder' : 'Commentaire'}} ) }}
@@ -82,7 +85,7 @@
                 $(document).ready(function(){
                     $("#loadMore").on("click", function(event){  
                         $.ajax({  
-                        url:        '/tricks/details/1-Mute',  
+                        url:        '{{url}}',  
                         type:       'POST',   
                         data: jQuery.param({ lastCom: document.getElementById("commentsChild").childElementCount, reset: false}) ,
                         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -96,12 +99,12 @@
                             $('#commentsChild').append(data.content);
                             
                         }
-                        });  
+                        });
                     });
 
                     $("#resetComments").on("click", function(event){  
                         $.ajax({  
-                        url:        '/tricks/details/1-Mute',  
+                        url:        '{{url}}',  
                         type:       'POST',   
                         data: jQuery.param({ reset: true}) ,
                         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

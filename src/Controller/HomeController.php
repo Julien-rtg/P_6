@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\FigureRepository;
 use App\Repository\PhotoFigureRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -14,8 +15,9 @@ class HomeController extends AbstractController{
     /**
      * @Route("/", name="home")
      */
-    public function home(FigureRepository $figureRepository): Response
+    public function home(FigureRepository $figureRepository, Request $request): Response
     {
+        $addTrick = $request->query->get('add');
         // je récupère toutes mes figures avec les relations déjà faites
         $allFigure = $figureRepository->findAll();
         $slugger = new AsciiSlugger();
@@ -26,7 +28,8 @@ class HomeController extends AbstractController{
         // dd($allFigure);
 
         return $this->render('public/home.html.twig', [
-            'figures' => $allFigure
+            'figures' => $allFigure,
+            'addTrick' => $addTrick
         ]);
     }
 

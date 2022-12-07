@@ -2,6 +2,19 @@
 
 {% block content %}
 
+    {% if addTrick == true %}
+        <div class="columns is-12">
+            <div class="column is-2 is-offset-5">
+                <div class="notification is-primary has-text-centered">
+                    <button class="delete" onclick="this.parentElement.style.display='none'"></button>
+                    <strong>
+                        Figure ajouté !
+                    </strong>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <img class="imgHome" src="{{ asset('assets/img/home.jpg') }}">
 
     <div class="columns is-multiline width90Auto">
@@ -20,7 +33,7 @@
                                 <a class="title is-4" href="{{ path('tricks', {id: figure.id, slug: figure.slug}) }}">{{figure.nom}}</a>
                             </div>
                             <div class="media-right">
-                                <a class="mr-5" href=""><i class="fa-solid fa-pen"></i></a>
+                                <a class="mr-5" href="{{ path('tricks_update', {id: figure.id, slug: figure.slug}) }}"><i class="fa-solid fa-pen"></i></a>
                                 <a href=""><i class="fa-solid fa-trash"></i></a>
                             </div>
                         </div>

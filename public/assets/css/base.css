@@ -1,6 +1,9 @@
 .imgHome{
     width: 100%;
 }
+.cursor{
+    cursor: pointer;
+}
 .zeroNineRem{
     font-size: 0.9rem;
 }

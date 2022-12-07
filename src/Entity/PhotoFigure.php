@@ -27,6 +27,9 @@ class PhotoFigure
      */
     protected $file;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $preview = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,6 +67,18 @@ class PhotoFigure
     public function setIdFigure(?Figure $id_figure): self
     {
         $this->id_figure = $id_figure;
+
+        return $this;
+    }
+
+    public function getPreview(): ?int
+    {
+        return $this->preview;
+    }
+
+    public function setPreview(?int $preview): self
+    {
+        $this->preview = $preview;
 
         return $this;
     }

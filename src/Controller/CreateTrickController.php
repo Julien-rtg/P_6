@@ -43,7 +43,6 @@ class CreateTrickController extends AbstractController
 
             $datas = $form->getData();
             if ($this->checkDataForm($datas, $figureRepository, $figure, $form) === true) { // si pas d'erreur
-                $form->get('nom')->addError(new FormError('OK'));
                 // ON INSERE EN PREMIER LA FIGURE POUR AVOIR L'ID DE LA FIGURE POUR LES PHOTOS ET VIDEOS
                 $figure2->setNom($datas->getNom());
                 $figure2->setGroupeFigure($datas->getGroupeFigure());
@@ -57,11 +56,14 @@ class CreateTrickController extends AbstractController
                 $em->flush();
 
                 $files = $figure->getPhotoFigures();
-                foreach ($files as $file) {
-                    $attachment = $file->getFile(); // This is the file
-                    $file->setPath($fileUploader->upload($attachment));
-                    $file->setIdFigure($figure2);
-                    $em->persist($file);
+                for($i = 0; $i<count($files); $i++){
+                    $attachment = $files[$i]->getFile(); // This is the file
+                    $files[$i]->setPath($fileUploader->upload($attachment));
+                    if($i == 0){
+                        $files[$i]->setPreview(1);
+                    }
+                    $files[$i]->setIdFigure($figure2);
+                    $em->persist($files[$i]);
                     $em->flush();
                 }
                 // dd($files);
@@ -77,7 +79,7 @@ class CreateTrickController extends AbstractController
                 }
                 // dd($videos);
 
-                return $this->redirect($request->getUri()); // refresh
+                return $this->redirect('/?add=true');
             }
             
         }
