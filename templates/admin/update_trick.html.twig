@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'method': 'POST'}) }}
 
         <div class="photoTrickSpotlight">
             {% for photo in figure.photoFigures %}
@@ -10,6 +10,8 @@
                     <div id="containerPreviewImage">
                         <img id="previewImage" class="width100" src="/assets/img/{{photo.path}}">
                     </div>
+                {% else %}
+
                 {% endif %}
             {% endfor %}
             <a class="mr-5" onclick="openModal('modalPreviewImage')"><i class="fa-solid fa-pen"></i></a>
@@ -29,15 +31,36 @@
             {# je boucle sur les videos de mes figures #}
             {% for video in figure.videoFigures %}
                 <div class="videoTrick column is-2">
-                    <iframe src="{{video.path}}" title="YouTube video player" 
+                    {# on met les videos original car sinon a la modification elles sont remplacés par des mauvaises en car d'erreurs #}
+                    <iframe src="{{originalVideos[(loop.index)-1]}}" title="YouTube video player" 
                         frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                     </iframe>
                 </div>
+                {% if form.videoFigures.vars['errors']|length > 0 %}
+                    {% for error in form.videoFigures.vars['errors'] %}
+                        {# je recupere l'index de la boucle de mes erreurs et je regarde si le message(index de l'erreur) est l'index de ma boucle alors j'affiche si oui #}
+                        {% if (loop.parent.loop.index)-1 == error.message %} 
+                            <span id="error_{{loop.parent.loop.index-1}}" class="tag is-danger">Veuillez insérer une balise de type embed</span><br>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <a class="mr-5" onclick="openModal('modalPreviewVideo{{loop.index-1}}')"><i class="fa-solid fa-pen"></i></a>
+                <a href=""><i class="fa-solid fa-trash"></i></a>
             {% endfor %}
         </div>
 
-        <div class="description container mt-6">
+        <div class="container mt-6">
+            <button class="button is-small is-info">Ajout vidéo</button>
+            <button class="button is-small is-info">Ajout photo</button>
+        </div>
+
+        <div class="description container mt-3">
             {{ form_widget(form.nom, {'attr' : {'class': 'input'}} ) }}
+            {% if form.nom.vars['errors']|length > 0 %}
+                {% for error in form.nom.vars['errors'] %}
+                    <span class="tag is-danger">Le nom de cette figure existe déjà</span>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="description container mt-3">
             {{ form_widget(form.description, {'attr' : {'class': 'textarea', 'placeholder' : 'Commentaire'}} ) }}
@@ -82,13 +105,34 @@
                 <div class="modal-card">
                     <header class="modal-card-head">
                         <p class="modal-card-title">Modifier image</p>
-                        <a class="delete" aria-label="close"></a>
+                        <a class="delete" aria-label="close" onclick="closeModal('modalPreviewImage{{loop.index-1}}')"></a>
                     </header>
                     <section class="modal-card-body">
                         {{ form_widget(form.photoFigures[(loop.index)-1], {'attr' : {'class': 'input'}} ) }}
                     </section>
                     <footer class="modal-card-foot">
                         <a class="button is-success" onclick="closeModal('modalPreviewImage{{loop.index-1}}')">Valider</a>
+                    </footer>
+                </div>
+            </div>
+        {% endfor %}
+
+        {# je boucle sur mes videos pour avoir le memes nombres de modals #}
+        {% for video in figure.videoFigures %}
+            <div class="modal" id="modalPreviewVideo{{loop.index-1}}">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Modifier vidéo</p>
+                        <a class="delete" aria-label="close" onclick="closeModal('modalPreviewVideo{{loop.index-1}}')"></a>
+                    </header>
+                    <section class="modal-card-body">
+                        <span class="tag is-light mb-2">Veuillez entrer un lien de type embed</span>
+                        {{ form_widget(form.videoFigures[(loop.index)-1].path, {'attr' : {'class': 'input', 'placeholder' : 'Video de la figure'}} ) }}
+                        {# {{ form_widget(form.videoFigures[(loop.index)-1], {'attr' : {'class': 'input'}} ) }} #}
+                    </section>
+                    <footer class="modal-card-foot">
+                        <a class="button is-success" onclick="closeModal('modalPreviewVideo{{loop.index-1}}')">Valider</a>
                     </footer>
                 </div>
             </div>
