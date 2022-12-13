@@ -40,6 +40,7 @@ class TrickType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'error_bubbling' => false,
+                'required' => false
             ])
             ->add('save', SubmitType::class)
             // ->add('date_creation')

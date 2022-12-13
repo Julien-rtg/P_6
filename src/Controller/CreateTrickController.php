@@ -77,7 +77,6 @@ class CreateTrickController extends AbstractController
                     $em->persist($vid);
                     $em->flush();
                 }
-                // dd($videos);
 
                 return $this->redirect('/?add=true');
             }
