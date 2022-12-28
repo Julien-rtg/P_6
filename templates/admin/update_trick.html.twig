@@ -139,7 +139,7 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-offset-10 is-1">
-                    <a class="button is-danger" onclick="deleteFigure({{figure.photoFigures[0].idFigure.id}})">Supprimer</a>
+                    <a class="button is-danger" onclick="openModal('modalDeleteFigure')">Supprimer</a>
                 </div>
                 <div class="column is-1">
                     {{ form_row(form.save, { 'label': 'Sauvegarder', 'attr' : {'class' : 'button'} }) }}
@@ -195,6 +195,20 @@
                 <footer class="modal-card-foot">
                     <a class="button" onclick="closeModal('modalDeleteImage');">Non</a>
                     <a class="button is-success" onclick="deletePreviewImage({{figure.photoFigures[0].idFigure.id}})">Oui</a>
+                </footer>
+            </div>
+        </div>
+
+        <div class="modal" id="modalDeleteFigure">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Vous voulez supprimer cette figure ?</p>
+                    <a class="delete" aria-label="close" onclick="closeModal('modalDeleteFigure');"></a>
+                </header>
+                <footer class="modal-card-foot">
+                    <a class="button" onclick="closeModal('modalDeleteFigure');">Non</a>
+                    <a class="button is-success" onclick="deleteFigure({{figure.photoFigures[0].idFigure.id}})">Oui</a>
                 </footer>
             </div>
         </div>
