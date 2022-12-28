@@ -212,4 +212,20 @@ class UpdateTrickController extends AbstractController
         return new Response('Ok', 200);
     }
 
+    /**
+     * @Route("/tricks/deleteFigure", name="tricks_delete_figure")
+     */
+    public function deleteFigure(Request $request, FigureRepository $figureRepository, ManagerRegistry $doctrine) : Response
+    {
+        $em = $doctrine->getManager();
+        $id_figure = json_decode($request->getContent());
+
+        $figureToDelete = $figureRepository->findBy(['id' => $id_figure]);
+
+        $em->remove($figureToDelete[0]);
+        $em->flush();
+
+        return new Response('Ok', 200);
+    }
+
 }

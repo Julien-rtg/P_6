@@ -167,3 +167,15 @@ const deletePreviewImage = (id_figure) => {
         },
     });
 }
+
+const deleteFigure = (id_figure) => {
+    $.ajax({
+        type: "POST",
+        url: '/tricks/deleteFigure',
+        data: JSON.stringify(id_figure),
+        contentType: 'application/json',
+        success: function () {
+            window.location.href = '/?delete=true';
+        },
+    });
+}

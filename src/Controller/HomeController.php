@@ -18,6 +18,7 @@ class HomeController extends AbstractController{
     public function home(FigureRepository $figureRepository, Request $request): Response
     {
         $addTrick = $request->query->get('add');
+        $deleteTrick = $request->query->get('delete');
         // je récupère toutes mes figures avec les relations déjà faites
         $allFigure = $figureRepository->findAll();
         $slugger = new AsciiSlugger();
@@ -29,7 +30,8 @@ class HomeController extends AbstractController{
 
         return $this->render('public/home.html.twig', [
             'figures' => $allFigure,
-            'addTrick' => $addTrick
+            'addTrick' => $addTrick,
+            'deleteTrick' => $deleteTrick
         ]);
     }
 
