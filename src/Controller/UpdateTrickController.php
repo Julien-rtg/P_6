@@ -22,6 +22,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UpdateTrickController extends AbstractController
 {
+
+
     /**
      * @Route("/tricks/update/{id}-{slug}", name="tricks_update", requirements={"id"="\d+"})
      */
@@ -37,45 +39,76 @@ class UpdateTrickController extends AbstractController
         foreach($originalData['videoFigures'] as $ogVideo){
             $originalVideos[] = $ogVideo->getPath();
         }
-        $countPhotoFigure = count($figure->getPhotoFigures());
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
             if ($this->checkDataForm($datas, $figureRepository, $figure,$form, $originalVideos, $originalData) === true) {// si pas d'erreur
                 $user = $userRepository->find(2); // on recup le user
-    
+
+                // Récupération de la liste des IDs de photos à supprimer
+                $photosToHide = [];
+                $videosToHide = [];
+                $gettingValuePhotos[] = $request->request->get('photos_to_hide', []);
+                for($h = 0; $h < 50; $h++){
+                    if(isset($gettingValuePhotos[$h])){
+                        $photosToHide[] = $gettingValuePhotos[$h];
+                    }else {
+                        $h = 50;
+                    }
+                }
+                $gettingValueVideos[] = $request->request->get('videos_to_hide', []);
+                for($v = 0; $v < 50; $v++){
+                    if(isset($gettingValueVideos[$v])){
+                        $videosToHide[] = $gettingValueVideos[$v];
+                    }else {
+                        $v = 50;
+                    }
+                }
+                
                 $datas->setDateModification(new DateTime());
                 $datas->setIdUtilisateur($user);
-    
+                
                 $files = $figure->getPhotoFigures();
-                for ($i = 0; $i < $countPhotoFigure; $i++) {
-                    // dd($files[$i]->getIdFigure());
-                    if($files[$i]->getFile()){
-                        // dd($files[$i]);
-                        $attachment = $files[$i]->getFile(); // This is the file
-                        $files[$i]->setPath($fileUploader->upload($attachment));
-                        $files[$i]->setIdFigure($figure);
-                        $em->persist($files[$i]); // les données des images
+
+                foreach($files as $file){
+                    $file->setIdFigure($figure);
+                    if (in_array($file->getId(), $photosToHide[0])) {
+                        // Suppression de la photo de la collection de photos de la figure
+                        $figure->getPhotoFigures()->removeElement($file);
+                        // Suppression de la photo de la base de données
+                        $em->remove($file);
+                    }
+                    if($file->getFile()){
+                        $attachment = $file->getFile(); // This is the file
+                        $file->setPath($fileUploader->upload($attachment));
+                        $em->persist($file); // les données des images
                         $em->flush();
                     }
                 }
 
                 $videos = $figure->getVideoFigures();
+
                 foreach ($videos as $vid) {
+                    $vid->setIdFigure($figure); 
+                    if (in_array($vid->getId(), $videosToHide[0])) { // on le supprime
+                        // Suppression de la photo de la collection de photos de la figure
+                        $figure->getVideoFigures()->removeElement($vid);
+                        // Suppression de la video de la base de données
+                        $em->remove($vid);
+                    }
                     preg_match('/src="([^"]+)"/', $vid->getPath(), $match);
                     if($match){
                         $url = $match[1];
                         $vid->setPath($url);
-                        $vid->setIdFigure($figure);
                         $em->persist($vid);
                         $em->flush();
                     }
                 }
-    
+                
                 $em->persist($datas); // les données de la figures
                 $em->flush();
-
+                
                 return $this->redirect($request->getUri()); // refresh
             }
 
@@ -108,7 +141,11 @@ class UpdateTrickController extends AbstractController
             preg_match('/src="([^"]+)"/', $videos[$i]->getPath(), $match);
             if (!$match) {
                 // si jamais la video de la figure existe et qu'elle est différente de celle en base de données alors on throw l'erreur sinon la valeur est bonne
-                if($originalVideos[$i] && $originalVideos[$i] != $videos[$i]->getPath()){
+                if(isset($originalVideos[$i]) && $originalVideos[$i] != $videos[$i]->getPath()){
+                    $index = strval($i);
+                    $form->get('videoFigures')->addError(new FormError($index));
+                    $error = true;
+                }else if(!isset($originalVideos[$i])){
                     $index = strval($i);
                     $form->get('videoFigures')->addError(new FormError($index));
                     $error = true;
@@ -118,7 +155,7 @@ class UpdateTrickController extends AbstractController
 
         $photos = $figure->getPhotoFigures();
         for ($j = 0; $j < count($photos); $j++) {
-            if($photos[$j]->getFile()){
+            if($photos[$j] && $photos[$j]->getFile()){
                 $ext = $photos[$j]->getFile()->getMimeType();
                 if ($ext != 'image/jpeg' && $ext != 'image/jpg' && $ext != 'image/png') {
                     $index = strval($j);
@@ -153,6 +190,24 @@ class UpdateTrickController extends AbstractController
         $setPhotoPreview->setPreview(1);
         $em->persist($setPhotoPreview); // les données de la figures
         $em->flush();
+
+        return new Response('Ok', 200);
+    }
+
+    /**
+     * @Route("/tricks/deleteMainPicture", name="tricks_delete_main_picture")
+     */
+    public function deleteMainPicture(Request $request, PhotoFigureRepository $photoFigureRepository, ManagerRegistry $doctrine) : Response
+    {
+        $em = $doctrine->getManager();
+        $id_figure = json_decode($request->getContent());
+
+        $setPhotoPreviewToFalse = $photoFigureRepository->findBy(['id_figure' => $id_figure]);
+        foreach($setPhotoPreviewToFalse as $photo){
+            $photo->setPreview(0);
+            $em->persist($photo); // les données de la figures
+            $em->flush();
+        }
 
         return new Response('Ok', 200);
     }
