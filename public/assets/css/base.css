@@ -76,3 +76,40 @@
     right: 20px;
     margin-top: 1rem;
 }
+.arrowUpHome{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2rem;
+}
+.arrowDownHome{
+    position: absolute;
+    z-index: 5;
+    right: 20px;
+    top: 90%;
+}
+.textDecoNone{
+    text-decoration: none;
+    color: black;
+}
+.hrFooter{
+    background-color: black;
+    height: 1px;
+}
+.footer{
+    padding: 0rem 1.5rem 3rem;
+}
+#navbar{
+    min-height: 7vh;
+}
+.main{
+    min-height: 80vh;
+}
+.footerContainer{
+    min-height: 10vh;
+}
+.displayNoneFigure{
+    display: none;
+}
+.displayNone{
+    display: none;
+}

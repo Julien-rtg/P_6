@@ -94,8 +94,6 @@ document.querySelectorAll('.tricks_delete_photo').forEach(btn => {
     btn.addEventListener("click", deleteFormInputPhoto)
 });
 
-
-
 // Function to open the modal
 const openModal = (item) => {
     // Add is-active class on the modal
@@ -177,5 +175,57 @@ const deleteFigure = (id_figure) => {
         success: function () {
             window.location.href = '/?delete=true';
         },
+    });
+}
+
+$(window).scroll(function () {
+    if ($(window).scrollTop() + $(window).height() == $(document).height()) { // si on arrive a la fin de la page on load plus de figures
+        let figures = document.querySelectorAll('.displayNoneFigure'); // on récupère les figures non affichées
+        for (let i = 0; i < 10; i++){
+            if(figures[i]){ // si la figure existe
+
+                figures[i].classList.remove('displayNoneFigure'); // on enlève la classe qui supprime l'affichage
+            }else {
+                document.getElementById('hideWhenFullyFigure').classList.add('displayNone');
+            }
+        }
+    }
+});
+
+const loadMoreComment = (url) => {
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: jQuery.param({ lastCom: document.getElementById("commentsChild").childElementCount, reset: false }),
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: true,
+
+        success: function (data) {
+            console.log('ok');
+            $('#commentsChild').remove();
+            let div = document.createElement("div");
+            div.setAttribute('id', 'commentsChild');
+            $('#comments')[0].appendChild(div);
+            $('#commentsChild').append(data.content);
+
+        }
+    });
+}
+
+const resetComment = (url) => {
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: jQuery.param({ reset: true }),
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        async: true,
+
+        success: function (data) {
+            $('#commentsChild').remove();
+            let div = document.createElement("div");
+            div.setAttribute('id', 'commentsChild');
+            $('#comments')[0].appendChild(div);
+            $('#commentsChild').append(data.content);
+        }
     });
 }
