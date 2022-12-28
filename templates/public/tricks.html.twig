@@ -71,57 +71,15 @@
                 </div>
                 <div class="btnComments">
                     <div class="loadMoreDiv">
-                        <div class="button" id="loadMore">Load more</div>
+                        <div class="button" id="loadMore" onclick="loadMoreComment('{{url}}')">Load more</div>
                     </div>
                     <div>
-                        <div class="button" id="resetComments">
+                        <div class="button" id="resetComments" onclick="resetComment('{{url}}')">
                             <i  class="fa-sharp fa-solid fa-chevron-up"></i>
                         </div>
                     </div>
                 </div>
             </div>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-            <script language="JavaScript" type="text/javascript">
-                $(document).ready(function(){
-                    $("#loadMore").on("click", function(event){  
-                        $.ajax({  
-                        url:        '{{url}}',  
-                        type:       'POST',   
-                        data: jQuery.param({ lastCom: document.getElementById("commentsChild").childElementCount, reset: false}) ,
-                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                        async:      true,  
-                        
-                        success: function(data, status) {
-                            $('#commentsChild').remove();
-                            let div = document.createElement("div");
-                            div.setAttribute('id', 'commentsChild');
-                            $('#comments')[0].appendChild(div);
-                            $('#commentsChild').append(data.content);
-                            
-                        }
-                        });
-                    });
-
-                    $("#resetComments").on("click", function(event){  
-                        $.ajax({  
-                        url:        '{{url}}',  
-                        type:       'POST',   
-                        data: jQuery.param({ reset: true}) ,
-                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                        async:      true,  
-                        
-                        success: function(data, status) {
-                            $('#commentsChild').remove();
-                            let div = document.createElement("div");
-                            div.setAttribute('id', 'commentsChild');
-                            $('#comments')[0].appendChild(div);
-                            $('#commentsChild').append(data.content);
-                            
-                        }
-                        });  
-                    });
-                });  
-            </script>
         </div>
 
 

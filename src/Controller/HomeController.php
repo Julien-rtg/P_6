@@ -26,7 +26,6 @@ class HomeController extends AbstractController{
         foreach($allFigure as $figure){
             $figure->slug = $slugger->slug($figure->getNom());
         }
-        // dd($allFigure);
 
         return $this->render('public/home.html.twig', [
             'figures' => $allFigure,
