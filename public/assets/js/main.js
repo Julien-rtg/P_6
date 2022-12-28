@@ -16,6 +16,16 @@ const addTagFormDeleteLink = (item, type) => {
         e.preventDefault();
         item.remove();
     });
+};
+
+const deletePhotoOrVideo = (id, type) =>{
+    if(type == 'photo'){
+        $('#form_update').append('<input type="hidden" name="photos_to_hide[]" value="' + id + '">');
+        document.getElementById('photo_'+id).remove();
+    }else if (type == 'video'){
+        $('#form_update').append('<input type="hidden" name="videos_to_hide[]" value="' + id + '">');
+        document.getElementById('video_'+id).remove();
+    }
 }
 
 const addFormToCollection = (e) => {
@@ -27,9 +37,14 @@ const addFormToCollection = (e) => {
     
     item.innerHTML = collectionHolder.dataset.prototype.replace(/__name__/g, collectionHolder.dataset.index);
     
+    if (classElement == 'tagsPhotoUpdate' || classElement == 'tagsVideoUpdate'){
+        item.classList.add('column');
+        item.classList.add('is-2');
+    }
+    
     collectionHolder.appendChild(item);
 
-    if (classElement == 'tagsPhoto') {
+    if (classElement == 'tagsPhoto' || classElement == 'tagsPhotoUpdate') {
         const el = document.getElementById('trick_photoFigures_' + itemIndex + '_file');
         el.classList.add('input');
         el.classList.add('mt-4');
@@ -80,6 +95,7 @@ document.querySelectorAll('.tricks_delete_photo').forEach(btn => {
 });
 
 
+
 // Function to open the modal
 const openModal = (item) => {
     // Add is-active class on the modal
@@ -124,6 +140,30 @@ const changePreviewImage = (path, id, id_figure) => {
             alert("Image à la une modifié avec succès");
         },
     });
+}
 
+const deletePreviewImage = (id_figure) => {
 
+    let previewImage = document.getElementById('previewImage');
+    let containerPreviewImage = document.getElementById('containerPreviewImage');
+
+    const item = document.createElement('img');
+    item.src = '/assets/img/base.jpg';
+    item.id = 'previewImage';
+    item.classList.add('width100');
+    previewImage.remove();
+
+    containerPreviewImage.appendChild(item);
+
+    closeModal('modalDeleteImage');
+
+    $.ajax({
+        type: "POST",
+        url: '/tricks/deleteMainPicture',
+        data: JSON.stringify(id_figure),
+        contentType: 'application/json',
+        success: function () {
+            alert("Image à la supprimé avec succès");
+        },
+    });
 }

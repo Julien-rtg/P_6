@@ -32,10 +32,10 @@ class Figure
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $id_utilisateur = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_figure', targetEntity: VideoFigure::class)]
+    #[ORM\OneToMany(mappedBy: 'id_figure', targetEntity: VideoFigure::class, cascade:['persist'])]
     private Collection $videoFigures;
 
-    #[ORM\OneToMany(mappedBy: 'id_figure', targetEntity: PhotoFigure::class)]
+    #[ORM\OneToMany(mappedBy: 'id_figure', targetEntity: PhotoFigure::class, cascade:['persist'])]
     private Collection $photoFigures;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

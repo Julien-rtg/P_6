@@ -68,3 +68,11 @@
     display: flex;
     justify-content: center;
 }
+.margin-bot4{
+    margin-bottom: 4rem;
+}
+.updateAndDeleteContainer{
+    position: absolute;
+    right: 20px;
+    margin-top: 1rem;
+}
