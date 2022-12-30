@@ -6,6 +6,9 @@
 parameters:
   upload: '%kernel.project_dir%/public/assets/img'
 services:
+    Symfony\Component\Mime\BodyRendererInterface:
+      class: Symfony\Bridge\Twig\Mime\BodyRenderer
+      arguments: ['@twig', '@Symfony\Bridge\Twig\Mime\TemplatedEmail']
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
