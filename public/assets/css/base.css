@@ -99,10 +99,10 @@
     padding: 0rem 1.5rem 3rem;
 }
 #navbar{
-    min-height: 7vh;
+    min-height: 6vh;
 }
 .main{
-    min-height: 80vh;
+    min-height: 81vh;
 }
 .footerContainer{
     min-height: 10vh;
@@ -112,4 +112,9 @@
 }
 .displayNone{
     display: none;
+}
+
+.loginContainer{
+    display: flex;
+    justify-content: center;
 }

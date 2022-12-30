@@ -47,7 +47,7 @@
                                         <a class="navbar-item">
                                             Sign in
                                         </a>
-                                        <a class="navbar-item">
+                                        <a class="navbar-item" href="{{ path('app_register') }}">
                                             Sign up
                                         </a>
                                         <a class="navbar-item" href="{{ path('create_trick') }}">
@@ -65,7 +65,14 @@
             </div>
 
             <div class="content main">
-                {% block content %}{% endblock %}
+                {% block content %}
+                    {% for label, message in app.flashes %}
+                        <div class="notification is-{{label}}">
+                            <button class="delete"></button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endblock %}
             </div>
         {% endblock %}
         
