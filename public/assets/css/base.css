@@ -118,3 +118,14 @@
     display: flex;
     justify-content: center;
 }
+.marginLoginContainer{
+    margin-top: 6rem;
+}
+.inputBottomLine {
+    outline: 0;
+    border-width: 0 0 2px;
+}
+.formPadding{
+    border: 1px solid;
+    width: 30%;
+}

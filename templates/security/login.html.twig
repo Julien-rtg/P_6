@@ -1,10 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+
     <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
 
         <label for="inputLogin">Nom d'utilisateur</label>
         <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" autocomplete="username" required autofocus>
@@ -15,6 +13,15 @@
             value="{{ csrf_token('authenticate') }}"
         >
 
+        {% if error %}
+            {% if error.message == 'The presented password is invalid.' %}
+                <span class="tag is-danger">Email ou mot de passe incorrect.</span>
+            {% else %}
+                <span class="tag is-danger">{{ error.message }}</span>
+            {% endif %}
+        {% endif %}
+        <a class="" onclick="openModal('modalResetPwd')">Mot de passe oublié ?</a>
+        <a class="" onclick="openModal('sendMailLogin')">Renvoyer email de validation</a>
         {#
             Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
             See https://symfony.com/doc/current/security/remember_me.html
@@ -30,4 +37,39 @@
             Se connecter
         </button>
     </form>
+
+    <div class="modal" id="sendMailLogin">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <form method="post" action="{{ path('send_verif_mail') }}">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Renvoyer email</p>
+                    <a class="delete" aria-label="close" onclick="closeModal('sendMailLogin')"></a>
+                </header>
+                <section class="modal-card-body">
+                        <input class="input" type="text" name="emailSend" id="inputEmailSend" class="form-control" required autofocus>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="submit" class="button is-success" onclick="closeModal('sendMailLogin')">Valider</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="modalResetPwd">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <form method="post" >
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Mot de passe oublié</p>
+                    <a class="delete" aria-label="close" onclick="closeModal('modalResetPwd')"></a>
+                </header>
+                <section class="modal-card-body">
+                        <input class="input" type="text" name="emailPwd" id="inputEmailPwd" class="form-control" required autofocus>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="submit" class="button is-success" onclick="closeModal('modalResetPwd')">Valider</button>
+                </footer>
+            </form>
+        </div>
+    </div>   
 {% endblock %}

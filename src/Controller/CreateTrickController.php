@@ -21,7 +21,7 @@ class CreateTrickController extends AbstractController
 {
 
     /**
-     * @Route("/create/trick", name="create_trick")
+     * @Route("/admin/create/trick", name="create_trick")
      */
     public function createTrick(Request $request, ManagerRegistry $doctrine, FileUploader $fileUploader, UtilisateurRepository $userRepository, FigureRepository $figureRepository): Response
     {
