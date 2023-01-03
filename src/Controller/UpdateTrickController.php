@@ -25,7 +25,7 @@ class UpdateTrickController extends AbstractController
 
 
     /**
-     * @Route("/tricks/update/{id}-{slug}", name="tricks_update", requirements={"id"="\d+"})
+     * @Route("/admin/tricks/update/{id}-{slug}", name="tricks_update", requirements={"id"="\d+"})
      */
     public function index(string $id, FigureRepository $figureRepository, FileUploader $fileUploader, UtilisateurRepository $userRepository, Request $request, ManagerRegistry $doctrine): Response
     {
@@ -45,7 +45,7 @@ class UpdateTrickController extends AbstractController
             $datas = $form->getData();
             if ($this->checkDataForm($datas, $figureRepository, $figure,$form, $originalVideos, $originalData) === true) {// si pas d'erreur
                 $user = $userRepository->find(2); // on recup le user
-
+                
                 // Récupération de la liste des IDs de photos à supprimer
                 $photosToHide = [];
                 $videosToHide = [];

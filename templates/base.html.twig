@@ -44,18 +44,28 @@
                                         <a class="navbar-item" href="#tricksHome">
                                             Tricks
                                         </a>
-                                        <a class="navbar-item">
-                                            Sign in
-                                        </a>
-                                        <a class="navbar-item" href="{{ path('app_register') }}">
-                                            Sign up
-                                        </a>
-                                        <a class="navbar-item" href="{{ path('create_trick') }}">
-                                            Create Trick
-                                        </a>
-                                        <a class="navbar-item">
-                                            Disconnect
-                                        </a>
+                                        {% if not app.user %}
+                                            <a class="navbar-item" href="{{ path('app_login') }}">
+                                                Sign in
+                                            </a>
+                                            <a class="navbar-item" href="{{ path('app_register') }}">
+                                                Sign up
+                                            </a>
+                                        {% endif %}
+                                        {% if app.user.roles is defined %}
+                                            {% for role in app.user.roles %}
+                                                {% if role == "ROLE_ADMIN" %}
+                                                    <a class="navbar-item" href="{{ path('create_trick') }}">
+                                                        Create Trick
+                                                    </a>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if app.user %}
+                                            <a class="navbar-item" href="{{ path('app_logout') }}">
+                                                Disconnect
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
