@@ -22,6 +22,8 @@ class Figure
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    public ?string $stringGroupeFigure;
+
     #[ORM\Column]
     private ?int $groupe_figure = null;
 

@@ -2,9 +2,19 @@
 
 {% block content %}
     <div class="photoTrickSpotlight">
+        {% set count = 0 %}
         {% for photo in figure.photoFigures %}
-            {%  if photo.preview %}
-                <img class="width100" src="/assets/img/{{photo.path}}">
+            {% if photo.preview %}
+                <div id="containerPreviewImage">
+                    <img id="previewImage" class="width100" src="/assets/img/{{photo.path}}">
+                </div>
+            {% else %}
+                {% set count = count + 1 %}
+                {% if figure.photoFigures|length == count %}
+                    <div id="containerPreviewImage">
+                        <img id="previewImage" class="width100" src="/assets/img/base.jpg">
+                    </div>
+                {% endif %}
             {% endif %}
         {% endfor %}
     </div>

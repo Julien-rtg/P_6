@@ -1,42 +1,60 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+    <div class="container">
+        <h1 class="has-text-centered">Se connecter</h1>
 
-    <form method="post">
+        <div class="loginContainer marginLoginContainer">
+            <form class="formPadding" method="post">
+                <div class="columns is-multiline has-text-centered mt-5">
+                    <div class="column is-12">
+                        <label for="inputLogin">Nom d'utilisateur</label> <br>
+                        <input class="inputBottomLine" type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" autocomplete="username" required autofocus>
+                    </div>
+                    
+                </div>
 
-        <label for="inputLogin">Nom d'utilisateur</label>
-        <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" autocomplete="username" required autofocus>
-        <label for="inputPassword">Mot de passe</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                <div class="columns is-multiline has-text-centered mt-5">
+                    <div class="column is-12">
+                        <label for="inputPassword">Mot de passe</label> <br>
+                        <input class="inputBottomLine" type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    </div>
+                    
+                </div>
 
-        <input type="hidden" name="_csrf_token"
-            value="{{ csrf_token('authenticate') }}"
-        >
+                <input type="hidden" name="_csrf_token"
+                    value="{{ csrf_token('authenticate') }}"
+                >
 
-        {% if error %}
-            {% if error.message == 'The presented password is invalid.' %}
-                <span class="tag is-danger">Email ou mot de passe incorrect.</span>
-            {% else %}
-                <span class="tag is-danger">{{ error.message }}</span>
-            {% endif %}
-        {% endif %}
-        <a class="" onclick="openModal('modalResetPwd')">Mot de passe oublié ?</a>
-        <a class="" onclick="openModal('sendMailLogin')">Renvoyer email de validation</a>
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
+                <div class="columns is-multiline has-text-centered">
+                    <div class="column is-12">
+                        {% if error %}
+                            {% if error.message == 'The presented password is invalid.' %}
+                                <span class="tag is-danger">Email ou mot de passe incorrect.</span> <br>
+                            {% else %}
+                                <span class="tag is-danger">{{ error.message }}</span> <br>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="column is-12 m-0 p-0">
+                        <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a> <br>
+                    </div>
+                    <div class="column is-12 m-0 p-0">
+                        <a onclick="openModal('sendMailLogin')">Renvoyer mail de validation de compte</a> <br>
+                    </div>
 
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" name="_remember_me"> Remember me
-                </label>
-            </div>
-        #}
+                    <div class="column is-12 mb-5 mt-5">
+                        <button class="button" type="submit">
+                            Se connecter
+                        </button>
+                    </div>
+                </div>
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Se connecter
-        </button>
-    </form>
+            </form>
+        </div>
+    </div>
+
+    
 
     <div class="modal" id="sendMailLogin">
         <div class="modal-background"></div>
@@ -47,7 +65,7 @@
                     <a class="delete" aria-label="close" onclick="closeModal('sendMailLogin')"></a>
                 </header>
                 <section class="modal-card-body">
-                        <input class="input" type="text" name="emailSend" id="inputEmailSend" class="form-control" required autofocus>
+                        <input placeholder="Email..." class="input" type="text" name="emailSend" id="inputEmailSend" class="form-control" required autofocus>
                 </section>
                 <footer class="modal-card-foot">
                     <button type="submit" class="button is-success" onclick="closeModal('sendMailLogin')">Valider</button>
@@ -55,21 +73,4 @@
             </form>
         </div>
     </div>
-    <div class="modal" id="modalResetPwd">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <form method="post" >
-                <header class="modal-card-head">
-                    <p class="modal-card-title">Mot de passe oublié</p>
-                    <a class="delete" aria-label="close" onclick="closeModal('modalResetPwd')"></a>
-                </header>
-                <section class="modal-card-body">
-                        <input class="input" type="text" name="emailPwd" id="inputEmailPwd" class="form-control" required autofocus>
-                </section>
-                <footer class="modal-card-foot">
-                    <button type="submit" class="button is-success" onclick="closeModal('modalResetPwd')">Valider</button>
-                </footer>
-            </form>
-        </div>
-    </div>   
 {% endblock %}
