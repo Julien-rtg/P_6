@@ -73,15 +73,21 @@
                     </nav>
                 {% endblock %}
             </div>
-
             <div class="content main">
-                {% block content %}
-                    {% for label, message in app.flashes %}
-                        <div class="notification is-{{label}}">
+            
+                <div class="columns is-multiline has-text-centered is-flex is-justify-content-center">
+                    {% for label, messages in app.flashes %}
+                    <div class="column is-4">
+                        <div class="notification {{label}}">
                             <button class="delete"></button>
-                            {{ message }}
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
                         </div>
+                    </div>
                     {% endfor %}
+                </div>
+                {% block content %}
                 {% endblock %}
             </div>
         {% endblock %}

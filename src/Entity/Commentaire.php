@@ -21,6 +21,8 @@ class Commentaire
     #[ORM\Column(type: Types::TEXT)]
     private ?string $contenu = null;
 
+    public ?string $user;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
