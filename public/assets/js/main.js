@@ -178,6 +178,17 @@ const deleteFigure = (id_figure) => {
     });
 }
 
+const deleteCom = (id_com) => {
+    $.ajax({
+        type: "POST",
+        url: '/tricks/deleteCom',
+        data: JSON.stringify(id_com),
+        contentType: 'application/json',
+        success: function () {
+        },
+    });
+}
+
 $(window).scroll(function () {
     if ($(window).scrollTop() + $(window).height() == $(document).height()) { // si on arrive a la fin de la page on load plus de figures
         let figures = document.querySelectorAll('.displayNoneFigure'); // on récupère les figures non affichées

@@ -129,3 +129,9 @@
     border: 1px solid;
     width: 30%;
 }
+.deleteComIcon{
+    display: flex;
+    align-self: end;
+    margin: 0.5rem;
+    color: red;
+}

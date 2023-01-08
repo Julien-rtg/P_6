@@ -22,6 +22,7 @@ class Commentaire
     private ?string $contenu = null;
 
     public ?string $user;
+    public ?string $userPhoto;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;

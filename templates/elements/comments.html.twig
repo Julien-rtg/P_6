@@ -1,19 +1,40 @@
 {# je boucle sur les commentaires de ma figure #}
 {% for com in figure.commentaires|reverse|slice(firstCom,lastCom) %}
     <div class="commentaires mb-3">
-        <img class="avatarCom" src="/assets/img/{{com.user.photo}}">
+        <img class="avatarCom" src="/assets/img/{{com.userPhoto}}">
 
         <div class="commentaire">
             <p class="mt-4">{{com.contenu}}</p>
             <div class="footerCommentaire">
                 <div class="is-flex">
-                    <p class="mr-2 has-text-weight-bold zeroNineRem">{{com.user.nom}}</p>
-                    <p class="has-text-weight-bold zeroNineRem">{{com.user.prenom}}</p>
+                    <p class="mr-2 has-text-weight-bold zeroNineRem">{{com.user}}</p>
                 </div>
                 <div>
                     <p class="has-text-weight-bold zeroNineRem">{{com.date|date("d/m/Y")}}</p>
                 </div>
+                {% if app.user.roles is defined %}
+                    {% for role in app.user.roles %}
+                        {% if role == "ROLE_ADMIN" %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
+            <a onclick="openModal('modalDeleteCom'+{{com.id}})" class="deleteComIcon" ><i class="fa-solid fa-trash"></i></a>
+        </div>
+    </div>
+
+
+    <div class="modal" id="modalDeleteCom{{com.id}}">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Vous voulez supprimer ce commentaire ?</p>
+                <a class="delete" aria-label="close" onclick="closeModal('modalDeleteCom{{com.id}}');"></a>
+            </header>
+            <footer class="modal-card-foot">
+                <a class="button" onclick="closeModal('modalDeleteCom{{com.id}}');">Non</a>
+                <a class="button is-success" onclick="deleteCom( '{{com.id}}' );">Oui</a>
+            </footer>
         </div>
     </div>
 {% endfor %}
