@@ -7,6 +7,7 @@ use App\Entity\Figure;
 use App\Entity\PhotoFigure;
 use App\Entity\VideoFigure;
 use App\Form\TrickType;
+use App\Repository\CommentaireRepository;
 use App\Repository\FigureRepository;
 use App\Repository\PhotoFigureRepository;
 use App\Repository\UtilisateurRepository;
@@ -227,5 +228,25 @@ class UpdateTrickController extends AbstractController
 
         return new Response('Ok', 200);
     }
+
+    /**
+     * @Route("/tricks/deleteCom", name="tricks_delete_com")
+     */
+    public function deleteCom(Request $request, CommentaireRepository $commentaireRepository, ManagerRegistry $doctrine) : Response
+    {
+        $em = $doctrine->getManager();
+        $id_com = json_decode($request->getContent());
+
+        $comToDelete = $commentaireRepository->findOneBy(['id' => $id_com]);
+
+        $em->remove($comToDelete);
+        $em->flush();
+
+        $this->addFlash('is-success', 'Commentaire supprimé');
+
+        return new Response('Ok', 200);
+    }
+
+
 
 }

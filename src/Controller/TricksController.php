@@ -32,7 +32,10 @@ class TricksController extends AbstractController
         $fullUrl = $request->getUri();
 
         foreach($figure->getCommentaires() as $com){ // on recupere l'utilisateur du commentaire
-            $com->user = $userRepository->find($com->getIdUtilisateur()->getId());
+            $nom = $userRepository->find($com->getIdUtilisateur()->getId())->getNom();
+            $prenom = $userRepository->find($com->getIdUtilisateur()->getId())->getPrenom();
+            $com->user = $nom . ' ' . $prenom;
+            $com->userPhoto = $userRepository->find($com->getIdUtilisateur()->getId())->getPhoto();
         }
 
         $form = $this->createForm(CommentaireType::class, $commentaire);
@@ -66,6 +69,7 @@ class TricksController extends AbstractController
                     'figure' => $figure,
                     'firstCom' => 0,
                     'lastCom' => $lastCom,
+                    'fullUrl' => $fullUrl
                 ])
             ]);
         } else { 

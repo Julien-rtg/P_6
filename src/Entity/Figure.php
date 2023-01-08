@@ -23,6 +23,7 @@ class Figure
     private ?string $description = null;
 
     public ?string $stringGroupeFigure;
+    public ?string $slug;
 
     #[ORM\Column]
     private ?int $groupe_figure = null;
