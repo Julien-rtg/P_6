@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,7 +30,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\Email(
-        message: 'The email {{ value }} is not a valid email.',
+        message: 'Cet email {{ value }} n\'est pas valide.',
     )]
     private ?string $email = null;
 
@@ -54,10 +55,26 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?bool $is_verified = null;
 
+    #[Assert\File(
+        extensions: ['jpg', 'jpeg', 'png'],
+        extensionsMessage: 'Extensions de fichiers non autorisés (jpg, jpeg, png) seulement',
+    )]
+    protected $file;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
         $this->figures = new ArrayCollection();
+    }
+
+    public function setFile(File $file = null)
+    {
+        $this->file = $file;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
     }
 
     public function getId(): ?int
@@ -273,6 +290,46 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->login;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->nom,
+            $this->prenom,
+            $this->email,
+            $this->mdp,
+            $this->role,
+            $this->login,
+            $this->photo,
+            $this->file,
+            $this->commentaires,
+            $this->figures,
+            $this->is_verified,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->nom,
+            $this->prenom,
+            $this->email,
+            $this->mdp,
+            $this->role,
+            $this->login,
+            $this->photo,
+            $this->file,
+            $this->commentaires,
+            $this->figures,
+            $this->is_verified,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized);
     }
 
 }

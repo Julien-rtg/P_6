@@ -57,7 +57,9 @@ class SecurityController extends AbstractController
                 ->htmlTemplate('registration/confirmation_email.html.twig')
         );
 
-        return $this->redirect('/login?send=true');
+        $this->addFlash('is-success', 'Mail envoyé !');
+
+        return $this->redirect('/login');
     }
 
 

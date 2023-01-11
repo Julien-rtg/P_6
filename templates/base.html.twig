@@ -62,6 +62,9 @@
                                             {% endfor %}
                                         {% endif %}
                                         {% if app.user %}
+                                            <a class="navbar-item" href="{{ path('app_account') }}">
+                                                Account
+                                            </a>
                                             <a class="navbar-item" href="{{ path('app_logout') }}">
                                                 Disconnect
                                             </a>

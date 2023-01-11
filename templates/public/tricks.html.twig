@@ -52,23 +52,26 @@
     </div>
 
     <div class="container">
-        <form class="" action="" method="POST">
-            {{ form_start(form) }}
-                <div class="my-custom-class-for-errors">
-                    {{ form_errors(form) }}
-                </div>
-                <div class="columns is-centered">
-                    <div class="column is-6">
-                        {{ form_widget(form.contenu, {'attr' : {'class': 'input', 'placeholder' : 'Commentaire'}} ) }}
+        {% if app.user %}
+            <form class="" action="" method="POST">
+                {{ form_start(form) }}
+                    <div class="my-custom-class-for-errors">
+                        {{ form_errors(form) }}
                     </div>
-                    <div class="column is-2">
-                        {{ form_row(form.save, { 'label': 'Leave a comment', 'attr' : {'class' : 'button'} }) }}
+                    <div class="columns is-centered">
+                        <div class="column is-6">
+                            {{ form_widget(form.contenu, {'attr' : {'class': 'input', 'placeholder' : 'Commentaire'}} ) }}
+                        </div>
+                        <div class="column is-2">
+                            {{ form_row(form.save, { 'label': 'Leave a comment', 'attr' : {'class' : 'button'} }) }}
+                        </div>
                     </div>
-                </div>
-            {{ form_end(form) }}
+                {{ form_end(form) }}
 
-        </form>
-        <hr>
+            </form>
+            
+            <hr>
+        {% endif %}
     </div>
     
     <div class="container">
@@ -80,14 +83,16 @@
                     </div>
                 </div>
                 <div class="btnComments">
-                    <div class="loadMoreDiv">
-                        <div class="button" id="loadMore" onclick="loadMoreComment('{{url}}')">Load more</div>
-                    </div>
-                    <div>
-                        <div class="button" id="resetComments" onclick="resetComment('{{url}}')">
-                            <i  class="fa-sharp fa-solid fa-chevron-up"></i>
+                    {% if figure.commentaires| length > 0 %}
+                        <div class="loadMoreDiv">
+                            <div class="button" id="loadMore" onclick="loadMoreComment('{{url}}')">Load more</div>
                         </div>
-                    </div>
+                        <div>
+                            <div class="button" id="resetComments" onclick="resetComment('{{url}}')">
+                                <i  class="fa-sharp fa-solid fa-chevron-up"></i>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
