@@ -23,15 +23,13 @@ class CreateTrickController extends AbstractController
     /**
      * @Route("/admin/create/trick", name="create_trick")
      */
-    public function createTrick(Request $request, ManagerRegistry $doctrine, FileUploader $fileUploader, UtilisateurRepository $userRepository, FigureRepository $figureRepository): Response
+    public function createTrick(Request $request, ManagerRegistry $doctrine, FileUploader $fileUploader, FigureRepository $figureRepository): Response
     {
         $figure = new Figure();
         $figure2 = new Figure();
         
         $photo = new PhotoFigure();
         $video = new VideoFigure();
-
-        $user = $userRepository->find(2); // on recup le user
 
         $figure->getPhotoFigures()->add($photo);
         $figure->getVideoFigures()->add($video);
@@ -49,7 +47,7 @@ class CreateTrickController extends AbstractController
                 $figure2->setDescription($datas->getDescription());
                 $figure2->setDateCreation(new DateTime());
                 $figure2->setDateModification(new DateTime());
-                $figure2->setIdUtilisateur($user);
+                $figure2->setIdUtilisateur($this->getUser());
 
                 $em = $doctrine->getManager();
                 $em->persist($figure2);
@@ -66,7 +64,6 @@ class CreateTrickController extends AbstractController
                     $em->persist($files[$i]);
                     $em->flush();
                 }
-                // dd($files);
 
                 $videos = $figure->getVideoFigures();
                 foreach ($videos as $vid) {
