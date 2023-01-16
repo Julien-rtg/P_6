@@ -43,7 +43,7 @@ class TricksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
             
-            $user = $userRepository->find(2); // on recup le user
+            $user = $userRepository->find($this->getUser()); // on recup le user
 
             $datas->setDate(new DateTime());
             $datas->setIdFigure($figure);
