@@ -45,7 +45,7 @@ class UpdateTrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
             if ($this->checkDataForm($datas, $figureRepository, $figure,$form, $originalVideos, $originalData) === true) {// si pas d'erreur
-                $user = $userRepository->find(2); // on recup le user
+                $user = $userRepository->find($this->getUser()); // on recup le user
                 
                 // Récupération de la liste des IDs de photos à supprimer
                 $photosToHide = [];
@@ -84,7 +84,6 @@ class UpdateTrickController extends AbstractController
                         $attachment = $file->getFile(); // This is the file
                         $file->setPath($fileUploader->upload($attachment));
                         $em->persist($file); // les données des images
-                        $em->flush();
                     }
                 }
 
@@ -103,7 +102,6 @@ class UpdateTrickController extends AbstractController
                         $url = $match[1];
                         $vid->setPath($url);
                         $em->persist($vid);
-                        $em->flush();
                     }
                 }
                 
@@ -127,8 +125,6 @@ class UpdateTrickController extends AbstractController
         $error = false;
         $nom = $datas->getNom();
         $res = $figureRepository->findBy(['nom' => $nom]);
-
-        // dd($originalData);
         
         if ($res) {
             if($originalData['nom'] != $nom){
@@ -184,7 +180,6 @@ class UpdateTrickController extends AbstractController
         foreach($setPhotoPreviewToFalse as $photo){
             $photo->setPreview(0);
             $em->persist($photo); // les données de la figures
-            $em->flush();
         }
 
         $setPhotoPreview = $photoFigureRepository->find($id);
@@ -203,14 +198,21 @@ class UpdateTrickController extends AbstractController
         $em = $doctrine->getManager();
         $id_figure = json_decode($request->getContent());
 
-        $setPhotoPreviewToFalse = $photoFigureRepository->findBy(['id_figure' => $id_figure]);
-        foreach($setPhotoPreviewToFalse as $photo){
+        $getAllPhotos = $photoFigureRepository->findBy(['id_figure' => $id_figure]);
+        $havePreviewImage=false;
+        foreach($getAllPhotos as $photo){
+            if($photo->getPreview()){ // on regarde si on a une image a la une ou pas
+                $havePreviewImage=true;
+            }
             $photo->setPreview(0);
             $em->persist($photo); // les données de la figures
-            $em->flush();
         }
-
-        return new Response('Ok', 200);
+        $em->flush();
+        if($havePreviewImage){
+            return new Response('Ok', 200);
+        }else {
+            return new Response('Error', 400);
+        }
     }
 
     /**
@@ -226,6 +228,7 @@ class UpdateTrickController extends AbstractController
         $em->remove($figureToDelete[0]);
         $em->flush();
 
+        $this->addFlash('is-success', 'Figure supprimé');
         return new Response('Ok', 200);
     }
 

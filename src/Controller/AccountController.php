@@ -24,12 +24,12 @@ class AccountController extends AbstractController
 
         $user = $this->getUser();
         $form = $this->createForm(UtilisateurType::class, $user);
-        
         $originalAvatar = $em->getUnitOfWork()->getOriginalEntityData($user)['photo'];
-
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
+
 
             if($datas->getFile()){
                 $attachment = $datas->getFile(); // This is the file

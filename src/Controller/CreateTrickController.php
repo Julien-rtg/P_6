@@ -55,14 +55,15 @@ class CreateTrickController extends AbstractController
 
                 $files = $figure->getPhotoFigures();
                 for($i = 0; $i<count($files); $i++){
-                    $attachment = $files[$i]->getFile(); // This is the file
-                    $files[$i]->setPath($fileUploader->upload($attachment));
-                    if($i == 0){
-                        $files[$i]->setPreview(1);
+                    if($files[$i] && $files[$i]->getFile()){
+                        $attachment = $files[$i]->getFile(); // This is the file
+                        $files[$i]->setPath($fileUploader->upload($attachment));
+                        if($i == 0){
+                            $files[$i]->setPreview(1);
+                        }
+                        $files[$i]->setIdFigure($figure2);
+                        $em->persist($files[$i]);
                     }
-                    $files[$i]->setIdFigure($figure2);
-                    $em->persist($files[$i]);
-                    $em->flush();
                 }
 
                 $videos = $figure->getVideoFigures();
@@ -72,10 +73,11 @@ class CreateTrickController extends AbstractController
                     $vid->setPath($url);
                     $vid->setIdFigure($figure2);
                     $em->persist($vid);
-                    $em->flush();
                 }
+                $em->flush();
 
-                return $this->redirect('/?add=true');
+                $this->addFlash('is-success', 'Figure ajouté');
+                return $this->redirect('/');
             }
             
         }
@@ -106,12 +108,15 @@ class CreateTrickController extends AbstractController
 
         $photos = $figure->getPhotoFigures();
         for($j = 0; $j < count($photos); $j++){
-            $ext = $photos[$j]->getFile()->getMimeType();
-            
-            if($ext != 'image/jpeg' && $ext !='image/jpg' && $ext != 'image/png'){
-                $index = strval($j);
-                $form->get('photoFigures')->addError(new FormError($index));
-                $error = true;
+            if ($photos[$j] && $photos[$j]->getFile()) {
+                $ext = $photos[$j]->getFile()->getMimeType();
+                
+                if($ext != 'image/jpeg' && $ext !='image/jpg' && $ext != 'image/png'){
+                    $index = strval($j);
+                    $form->get('photoFigures')->addError(new FormError($index));
+                    $error = true;
+                }
+
             }
         }
 

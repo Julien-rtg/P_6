@@ -30,7 +30,7 @@
                 </div>
                 <div class="column is-6">
                     {% for tag in form.photoFigures %}
-                        {{ form_widget(tag.file, {'attr' : {'class': 'input'}} ) }}
+                        {{ form_widget(tag.file, {'attr' : {'class': 'input', 'required': true}} ) }}
                         {% if form.photoFigures.vars['errors']|length > 0 %}
                             {% for error in form.photoFigures.vars['errors'] %}
                                 {# je recupere l'index de la boucle de mes erreurs et je regarde si le message(index de l'erreur) est l'index de ma boucle alors j'affiche si oui #}

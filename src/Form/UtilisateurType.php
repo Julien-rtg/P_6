@@ -16,8 +16,12 @@ class UtilisateurType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom', TextType::class)
-            ->add('prenom', TextType::class)
+            ->add('nom', TextType::class, [
+                'required' => false,
+            ])
+            ->add('prenom', TextType::class, [
+                'required' => false,
+            ])
             ->add('email', EmailType::class)
             // ->add('photo', FileType::class, [
             //     'data_class' => null,
@@ -26,7 +30,9 @@ class UtilisateurType extends AbstractType
                 'data_class' => null,
                 'required' => false,
             ])
-            ->add('login', TextType::class)
+            // ->add('login', TextType::class, [
+            //     'required' => false,
+            // ])
             ->add('save', SubmitType::class)
         ;
     }

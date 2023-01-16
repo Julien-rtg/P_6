@@ -4,7 +4,7 @@ const addTagFormDeleteLink = (item, type) => {
     removeFormButton.classList.add('is-small');
     removeFormButton.classList.add('is-warning');
     removeFormButton.classList.add('mt-1');
-    if (type == 'tagsPhoto'){
+    if (type == 'tagsPhoto' || type == 'tagsPhotoUpdate'){
         removeFormButton.innerText = 'Supprimer cette photo';
     }else {
         removeFormButton.innerText = 'Supprimer cette vidéo';
@@ -163,6 +163,9 @@ const deletePreviewImage = (id_figure) => {
         success: function () {
             alert("Image à la supprimé avec succès");
         },
+        error: function (){
+            alert("Impossible de supprimé une image à la une de base");
+        }
     });
 }
 
@@ -173,7 +176,7 @@ const deleteFigure = (id_figure) => {
         data: JSON.stringify(id_figure),
         contentType: 'application/json',
         success: function () {
-            window.location.href = '/?delete=true';
+            window.location.href = '/';
         },
     });
 }

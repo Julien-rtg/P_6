@@ -16,13 +16,14 @@
                         </div>
                     </div>
                 {% else %}
-                    {% set count = count + 1 %}
+                    {# on affiche qu'une seule fois la figure de base 1 = 1 OK // 2 = 1 NO  #}
+                    {% set count = count + 1 %} 
                     {% if figure.photoFigures|length == count %}
                         <div id="containerPreviewImage">
                             <img id="previewImage" class="width100" src="/assets/img/base.jpg">
                             <div class="button is-small updateAndDeleteContainer">
                                 <a class="mr-5" onclick="openModal('modalPreviewImage')"><i class="fa-solid fa-pen"></i></a>
-                                <a class="photo_delete" onclick="openModal('modalBaseImage')" id="photo_delete_base"><i class="fa-solid fa-trash"></i></a>
+                                <a class="photo_delete" onclick="openModal('modalDeleteImage')" id="photo_delete_{{photo.id}}"><i class="fa-solid fa-trash"></i></a>
                             </div>
                         </div>
                     {% endif %}
@@ -168,19 +169,6 @@
                 </section>
                 <footer class="modal-card-foot">
                     <a class="button" onclick="closeModal('modalPreviewImage');">Retour</a>
-                </footer>
-            </div>
-        </div>
-
-        <div class="modal" id="modalBaseImage">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-                <header class="modal-card-head">
-                    <p class="modal-card-title">Impossible de supprimer l'image à la une de base</p>
-                    <a class="delete" aria-label="close" onclick="closeModal('modalBaseImage')"></a>
-                </header>
-                <footer class="modal-card-foot">
-                    <a class="button" onclick="closeModal('modalBaseImage')">OK</a>
                 </footer>
             </div>
         </div>
