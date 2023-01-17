@@ -13,24 +13,24 @@
                 <div class="column is-12 has-text-centered">
                     <img class="photoAccount" src="assets/img/{{avatar}}">
                 </div>
-                <div class="column is-6">
+                <div class="column is-4">
                     <label class="label ml-1">Nom :</label>
                     {{ form_widget(form.nom, {'attr' : {'class': 'input', 'placeholder' : 'Nom'}} ) }}
                 </div>
-                <div class="column is-6">
+                <div class="column is-4">
                     <label class="label ml-1">Prénom :</label>
                     {{ form_widget(form.prenom, {'attr' : {'class': 'input', 'placeholder' : 'Prénom'}} ) }}
                 </div>
-                {# <div class="column is-4">
+                <div class="column is-4">
                     <label class="label ml-1">Login :</label>
-                    {{ form_widget(form.login, {'attr' : {'class': 'input', 'placeholder' : 'Login'}} ) }}
+                    {{ form_widget(form.login, {'attr' : {'class': 'input', 'placeholder' : 'Login', 'readonly' : 'true'}} ) }}
                     {% if form.login.vars['errors']|length > 0 %}
                         {% for error in form.login.vars['errors'] %}
                             <span class="tag is-danger">{{error.message}}</span>
                         {% endfor %}
                     {% endif %}
 
-                </div> #}
+                </div>
                 <div class="column is-6">
                     <label class="label ml-1">Email :</label>
                     {{ form_widget(form.email, {'attr' : {'class': 'input', 'placeholder' : 'E-mail'}} ) }}

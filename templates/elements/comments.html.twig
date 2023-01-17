@@ -9,17 +9,19 @@
                 <div class="is-flex">
                     <p class="mr-2 has-text-weight-bold zeroNineRem">{{com.user}}</p>
                 </div>
-                <div>
+                <div class="is-flex">
                     <p class="has-text-weight-bold zeroNineRem">{{com.date|date("d/m/Y")}}</p>
+                    {% if app.user.roles is defined %}
+                        {% for role in app.user.roles %}
+                            {% if role == "ROLE_ADMIN" %}
+                                <p>
+                                    <a onclick="openModal('modalDeleteCom'+{{com.id}})" class="deleteComIcon" ><i class="fa-solid fa-trash"></i></a>
+                                </p>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
-                {% if app.user.roles is defined %}
-                    {% for role in app.user.roles %}
-                        {% if role == "ROLE_ADMIN" %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
             </div>
-            <a onclick="openModal('modalDeleteCom'+{{com.id}})" class="deleteComIcon" ><i class="fa-solid fa-trash"></i></a>
         </div>
     </div>
 

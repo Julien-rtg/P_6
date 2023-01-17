@@ -21,6 +21,11 @@ class FigureRepository extends ServiceEntityRepository
         parent::__construct($registry, Figure::class);
     }
 
+    public function findAll()
+    {
+        return $this->findBy(array(), array('date_creation' => 'DESC'));
+    }
+
     public function save(Figure $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
