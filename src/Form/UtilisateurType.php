@@ -23,16 +23,13 @@ class UtilisateurType extends AbstractType
                 'required' => false,
             ])
             ->add('email', EmailType::class)
-            // ->add('photo', FileType::class, [
-            //     'data_class' => null,
-            // ])
             ->add('file', FileType::class, [
                 'data_class' => null,
                 'required' => false,
             ])
-            // ->add('login', TextType::class, [
-            //     'required' => false,
-            // ])
+            ->add('login', TextType::class, [
+                'required' => false,
+            ])
             ->add('save', SubmitType::class)
         ;
     }

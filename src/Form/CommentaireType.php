@@ -19,6 +19,7 @@ class CommentaireType extends AbstractType
             ->add('contenu', TextType::class)
             ->add('save', SubmitType::class)
         ;
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

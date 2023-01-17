@@ -38,7 +38,7 @@
         {# je boucle sur toutes mes figures #}
         {% for figure in figures %}
             {% if loop.index > 15 %}
-                <div class="column is-one-fifth displayNoneFigure">
+                <div class="column is-one-fifth-desktop is-one-quarter-tablet displayNoneFigure">
                     <div class="card">
                         <div class="card-image">
                             <figure class="image is-4by3">
@@ -77,7 +77,7 @@
                     </div>
                 </div>
             {% else %}
-                <div class="column is-one-fifth">
+                <div class="column is-one-fifth-desktop is-one-third-tablet">
                     <div class="card">
                         <div class="card-image">
                             <figure class="image is-4by3">

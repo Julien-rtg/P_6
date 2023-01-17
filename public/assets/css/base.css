@@ -1,5 +1,7 @@
 .imgHome{
     width: 100%;
+    min-height: 50vh;
+    background-size: cover;
 }
 .cursor{
     cursor: pointer;
@@ -49,7 +51,7 @@
 .footerCommentaire{
     display: flex;
     justify-content: space-between;
-    width: 90%;
+    width: 95%;
 }
 .avatarCom{
     width: 60px;
@@ -138,4 +140,49 @@
 .photoAccount{
     border-radius: 50%;
     width: 150px;
+}
+#resetComments{
+    display: none;
+}
+.footerMobile{
+    display: none;
+}
+@media screen and (max-width: 1500px) {
+    .arrowDownHome{
+        top: 70%;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .arrowDownHome{
+        top: 50%;
+    }
+}
+@media screen and (max-width: 768px) {
+    #navbar{
+        display: none;
+    }
+    .arrowUpHome{
+        display: none;
+    }
+    .arrowDownHome{
+        top: 40%;
+    }
+    .footerContent{
+        margin-top: 6rem;
+    }
+    .footerMobile{
+        display: flex;
+        justify-content: space-around;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        color: rgb(0, 0, 0);
+        text-align: center;
+        padding: 1rem;
+        border-top: 1px solid black;
+    }
+    .footerDesktop{
+        display: none;
+    }
 }

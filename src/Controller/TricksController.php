@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class TricksController extends AbstractController
 {
@@ -27,6 +28,8 @@ class TricksController extends AbstractController
         $figure = $figureRepository->find($id);
         $matchingGroupeFigure = [1 => 'Grabs', 2 => 'Rotations', 3 => 'Flips'];
         $figure->stringGroupeFigure = $matchingGroupeFigure[$figure->getGroupeFigure()];
+        $slugger = new AsciiSlugger();
+        $figure->slug = $slugger->slug($figure->getNom());
 
         $url = $request->getPathInfo();
         $fullUrl = $request->getUri();
@@ -42,24 +45,31 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
-            
-            $user = $userRepository->find($this->getUser()); // on recup le user
+            if(!$this->getUser()->getNom() || !$this->getUser()->getPrenom()){
+                $this->addFlash('is-danger', 'Veuillez renseigner votre nom et prénom avant d\'ajouter un commentaire');
+            }else if (strlen(trim($datas->getContenu())) == 0){
+                $this->addFlash('is-danger', 'Veuillez renseigner un commentaire');
+            }else {
+                $user = $userRepository->find($this->getUser()); // on recup le user
 
-            $datas->setDate(new DateTime());
-            $datas->setIdFigure($figure);
-            $datas->setIdUtilisateur($user);
+                $datas->setDate(new DateTime());
+                $datas->setIdFigure($figure);
+                $datas->setIdUtilisateur($user);
 
-            $em = $doctrine->getManager();
-            $em->persist($datas);
-            $em->flush();
+                $em = $doctrine->getManager();
+                $em->persist($datas);
+                $em->flush();
 
-            return $this->redirect($request->getUri()); // refresh
+                $this->addFlash('is-success', 'Commentaire ajouté !');
+
+                return $this->redirect($request->getUri()); // refresh
+            }
         }
 
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $reset = $request->request->get('reset');
             if($reset == 'true'){
-                $lastCom = 5;
+                $lastCom = 10;
             }else {
                 $lastCom = $request->request->get('lastCom');
                 $lastCom = intval($lastCom)+5;
@@ -77,7 +87,7 @@ class TricksController extends AbstractController
                 'figure' => $figure,
                 'form' => $form->createView(),
                 'firstCom' => 0,
-                'lastCom' => 5,
+                'lastCom' => 10,
                 'url' => $url,
                 'fullUrl' => $fullUrl
             ]);
