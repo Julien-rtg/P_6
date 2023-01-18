@@ -7,15 +7,11 @@
             {% if photo.preview %}
                 <div id="containerPreviewImage">
                     <img id="previewImage" class="width100" src="/assets/img/{{photo.path}}">
-                    {% if app.user.roles is defined %}
-                        {% for role in app.user.roles %}
-                            {% if role == "ROLE_ADMIN" %}
-                                <div class="button is-small updateAndDeleteContainer">
-                                    <a class="mr-5" href="{{ path('tricks_update', {id: figure.id, slug: figure.slug}) }}"><i class="fa-solid fa-pen"></i></a>
-                                    <a onclick="openModal('modalDeleteFigure'+{{figure.id}})"><i class="fa-solid fa-trash"></i></a>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                    {% if userConnected and userConnected.roles[0] == 'ROLE_ADMIN' %}
+                        <div class="button is-small updateAndDeleteContainer">
+                            <a class="mr-5" href="{{ path('tricks_update', {id: figure.id, slug: figure.slug}) }}"><i class="fa-solid fa-pen"></i></a>
+                            <a onclick="openModal('modalDeleteFigure'+{{figure.id}})"><i class="fa-solid fa-trash"></i></a>
+                        </div>
                     {% endif %}
                 </div>
             {% else %}

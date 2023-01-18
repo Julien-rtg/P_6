@@ -31,6 +31,8 @@ class TricksController extends AbstractController
         $slugger = new AsciiSlugger();
         $figure->slug = $slugger->slug($figure->getNom());
 
+        $userConnected = $this->getUser();
+        // dd($userConnected);
         $url = $request->getPathInfo();
         $fullUrl = $request->getUri();
 
@@ -45,12 +47,12 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
-            if(!$this->getUser()->getNom() || !$this->getUser()->getPrenom()){
+            if(!$userConnected->getNom() || !$userConnected->getPrenom()){
                 $this->addFlash('is-danger', 'Veuillez renseigner votre nom et prénom avant d\'ajouter un commentaire');
             }else if (strlen(trim($datas->getContenu())) == 0){
                 $this->addFlash('is-danger', 'Veuillez renseigner un commentaire');
             }else {
-                $user = $userRepository->find($this->getUser()); // on recup le user
+                $user = $userRepository->find($userConnected); // on recup le user
 
                 $datas->setDate(new DateTime());
                 $datas->setIdFigure($figure);
@@ -89,7 +91,8 @@ class TricksController extends AbstractController
                 'firstCom' => 0,
                 'lastCom' => 10,
                 'url' => $url,
-                'fullUrl' => $fullUrl
+                'fullUrl' => $fullUrl,
+                'userConnected' => $userConnected
             ]);
         }
     }
