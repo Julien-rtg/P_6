@@ -30,10 +30,6 @@
     margin-left: 0;
     margin-right: 0;
 }
-.dateContainerFigure{
-    display: flex;
-    justify-content: center;
-}
 .commentaires{
     display: flex;
     align-items: center;
@@ -147,6 +143,12 @@
 .footerMobile{
     display: none;
 }
+.showOnMobile{
+    display: none;
+}
+.hiddenMobile {
+    display: flex;
+}
 @media screen and (max-width: 1500px) {
     .arrowDownHome{
         top: 70%;
@@ -158,6 +160,9 @@
     }
 }
 @media screen and (max-width: 768px) {
+    #loadMore{
+        margin-left: 3rem;
+    }
     #navbar{
         display: none;
     }
@@ -184,5 +189,19 @@
     }
     .footerDesktop{
         display: none;
+    }
+    .hiddenMobile{
+        display: none;
+    }
+    .showOnMobile{
+        display: flex;
+    }
+    .photoTrickSpotlight img{
+        height: 500px;
+    }
+}
+@media screen and (max-width: 500px) {
+    .photoTrickSpotlight img{
+        height: 400px;
     }
 }

@@ -200,17 +200,21 @@ $(window).scroll(function () {
 
                 figures[i].classList.remove('displayNoneFigure'); // on enlève la classe qui supprime l'affichage
             }else {
-                document.getElementById('hideWhenFullyFigure').classList.add('displayNone');
+                let element = document.getElementById('hideWhenFullyFigure');
+                if(element){
+                    element.classList.add('displayNone')
+                }
             }
         }
     }
 });
 
-const loadMoreComment = (url) => {
+const loadMoreComment = (url, maxLength) => {
+    let lastCom = document.getElementsByClassName("commentaires").length;
     $.ajax({
         url: url,
         type: 'POST',
-        data: jQuery.param({ lastCom: document.getElementById("commentsChild").childElementCount, reset: false }),
+        data: jQuery.param({ lastCom, reset: false }),
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         async: true,
 
@@ -222,6 +226,9 @@ const loadMoreComment = (url) => {
             $('#comments')[0].appendChild(div);
             $('#commentsChild').append(data.content);
             document.getElementById('resetComments').style.display = "block";
+            if(lastCom >= maxLength){
+                document.getElementById('loadMore').style.display = "none";
+            }
         }
     });
 }
@@ -240,6 +247,7 @@ const resetComment = (url) => {
             div.setAttribute('id', 'commentsChild');
             $('#comments')[0].appendChild(div);
             $('#commentsChild').append(data.content);
+            document.getElementById('loadMore').style.display = "block";
         }
     });
 }
@@ -269,3 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+const showMedia = () => {
+    document.querySelectorAll('.toggleShow').forEach(element => {
+        element.classList.add('showOnMobile')
+    });
+
+}
