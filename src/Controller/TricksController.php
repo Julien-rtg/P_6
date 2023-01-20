@@ -31,6 +31,13 @@ class TricksController extends AbstractController
         $slugger = new AsciiSlugger();
         $figure->slug = $slugger->slug($figure->getNom());
 
+        $showPreview = false;
+        foreach($figure->getPhotoFigures() as $fig){
+            if($fig->getPreview()){
+                $showPreview=true;
+                $figureToPreview = $fig;
+            }
+        }
         $userConnected = $this->getUser();
         // dd($userConnected);
         $url = $request->getPathInfo();
@@ -92,7 +99,9 @@ class TricksController extends AbstractController
                 'lastCom' => 10,
                 'url' => $url,
                 'fullUrl' => $fullUrl,
-                'userConnected' => $userConnected
+                'userConnected' => $userConnected,
+                'showPreview' => $showPreview,
+                'figureToPreview' => $figureToPreview ?? null
             ]);
         }
     }
