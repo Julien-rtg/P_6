@@ -3,6 +3,17 @@
     min-height: 50vh;
     background-size: cover;
 }
+#errorBlock {
+    height: 50%;
+    width: 50%;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    text-align: center;
+}
+#errorBlock img {
+    height: 30vh;
+}
 .widthFit{
     width: fit-content;
 }
