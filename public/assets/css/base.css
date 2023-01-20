@@ -3,6 +3,9 @@
     min-height: 50vh;
     background-size: cover;
 }
+.widthFit{
+    width: fit-content;
+}
 .cursor{
     cursor: pointer;
 }

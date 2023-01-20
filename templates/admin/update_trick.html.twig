@@ -34,8 +34,10 @@
         <div class="columns is-multiline width90Auto">
             {# je boucle sur les photos de mes figures #}
             {% for photo in figure.photoFigures %}
-                    <div class="photoTrick column is-2 margin-bot4" id="photo_{{photo.id}}">
-                        <img src="/assets/img/{{photo.path}}">
+                    <div class="column margin-bot4 is-2-fullhd is-3-desktop is-4-tablet hiddenMobile toggleShow is-flex is-flex-direction-column" id="photo_{{photo.id}}">
+                        <div class="photoTrick">
+                            <img src="/assets/img/{{photo.path}}">
+                        </div>
                         {% if photo.path is null %}
                             <span class="tag is-danger">Veuillez renseigner une image</span><br>
                         {% endif %}
@@ -47,22 +49,25 @@
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-
-                        <div class="button is-small">
-                            <a class="mr-5" onclick="openModal('modalPreviewImage{{loop.index-1}}')"><i class="fa-solid fa-pen"></i></a>
-                            <a onclick="deletePhotoOrVideo('{{photo.id}}', 'photo')" ><i class="fa-solid fa-trash"></i></a>
+                        <div class="is-flex is-justify-content-end mt-4">
+                            <div class="button is-small">
+                                <a class="mr-5" onclick="openModal('modalPreviewImage{{loop.index-1}}')"><i class="fa-solid fa-pen"></i></a>
+                                <a onclick="deletePhotoOrVideo('{{photo.id}}', 'photo')" ><i class="fa-solid fa-trash"></i></a>
+                            </div>
                         </div>
                     </div>
             {% endfor %}
 
             {# je boucle sur les videos de mes figures #}
             {% for video in figure.videoFigures %}
-                <div class="videoTrick column is-2 margin-bot4" id="video_{{video.id}}">
+                <div class="column margin-bot4 is-2-fullhd is-3-desktop is-4-tablet hiddenMobile toggleShow is-flex is-flex-direction-column" id="video_{{video.id}}">
                     {# on met les videos original car sinon a la modification elles sont remplacés par des mauvaises en car d'erreurs #}
                     {% if originalVideos[(loop.index)-1] is defined %}
-                        <iframe src="{{originalVideos[(loop.index)-1]}}" title="YouTube video player" 
-                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-                        </iframe>
+                        <div class="videoTrick">
+                            <iframe src="{{originalVideos[(loop.index)-1]}}" title="YouTube video player" 
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                            </iframe>
+                        </div>
                     {% else %}
                         <input onclick="openModal('modalPreviewVideo{{loop.index-1}}')" type="text" class="input" value="Cliquez ici pour changer">
 
@@ -74,10 +79,11 @@
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-
-                        <div class="button is-small">
-                            <a class="mr-5" onclick="openModal('modalPreviewVideo{{loop.index-1}}')"><i class="fa-solid fa-pen"></i></a>
-                            <a onclick="deletePhotoOrVideo('{{video.id}}', 'video')" ><i class="fa-solid fa-trash"></i></a>
+                        <div class="is-flex is-justify-content-end mt-4">
+                            <div class="button is-small">
+                                <a class="mr-5" onclick="openModal('modalPreviewVideo{{loop.index-1}}')"><i class="fa-solid fa-pen"></i></a>
+                                <a onclick="deletePhotoOrVideo('{{video.id}}', 'video')" ><i class="fa-solid fa-trash"></i></a>
+                            </div>
                         </div>
                     {% endif %}
                     {# si les vidéos sont déja présentes on affiche un autre render de message d'erreur #}
@@ -90,9 +96,11 @@
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-                        <div class="button is-small">
-                            <a class="mr-5" onclick="openModal('modalPreviewVideo{{loop.index-1}}')"><i class="fa-solid fa-pen"></i></a>
-                            <a onclick="deletePhotoOrVideo('{{video.id}}', 'video')" ><i class="fa-solid fa-trash"></i></a>
+                        <div class="is-flex is-justify-content-end mt-4">
+                            <div class="button is-small">
+                                <a class="mr-5" onclick="openModal('modalPreviewVideo{{loop.index-1}}')"><i class="fa-solid fa-pen"></i></a>
+                                <a onclick="deletePhotoOrVideo('{{video.id}}', 'video')" ><i class="fa-solid fa-trash"></i></a>
+                            </div>
                         </div>
                     
                     {% endif %}
@@ -108,12 +116,12 @@
 
         </div>
 
-        <div class="container mt-6">
+        <div class="container mt-6 width90Auto">
             <a class="button is-small is-info add_item_link" data-collection-holder-class="tagsVideoUpdate">Ajout vidéo</a>
             <a class="button is-small is-info add_item_link" data-collection-holder-class="tagsPhotoUpdate">Ajout photo</a>
         </div>
 
-        <div class="description container mt-3">
+        <div class="description container mt-3 width90Auto">
             {{ form_widget(form.nom, {'attr' : {'class': 'input'}} ) }}
             {% if form.nom.vars['errors']|length > 0 %}
                 {% for error in form.nom.vars['errors'] %}
@@ -121,14 +129,14 @@
                 {% endfor %}
             {% endif %}
         </div>
-        <div class="description container mt-3">
+        <div class="description container mt-3 width90Auto">
             {{ form_widget(form.description, {'attr' : {'class': 'textarea', 'placeholder' : 'Commentaire'}} ) }}
         </div>
 
-        <div class="container mt-3">
+        <div class="container mt-3 width90Auto">
 
             <div class="columns">
-                <div class="column is-2">
+                <div class="column is-2 is-6-mobile">
                     <div class="select width100">
                         {{ form_widget(form.groupe_figure, {'attr' : {'class':'width100', 'placeholder' : 'Description'}} ) }}
                     </div>
@@ -137,12 +145,12 @@
 
         </div>
 
-        <div class="container">
-            <div class="columns">
-                <div class="column is-offset-10 is-1">
+        <div class="container width90Auto">
+            <div class="columns is-multiline is-flex">
+                <div class="column is-offset-8 is-2 is-6-mobile has-text-right-fullhd has-text-centered-mobile">
                     <a class="button is-danger" onclick="openModal('modalDeleteFigure')">Supprimer</a>
                 </div>
-                <div class="column is-1">
+                <div class="column is-2 is-6-mobile has-text-right-fullhd has-text-centered-mobile">
                     {{ form_row(form.save, { 'label': 'Sauvegarder', 'attr' : {'class' : 'button'} }) }}
                 </div>
             </div>
