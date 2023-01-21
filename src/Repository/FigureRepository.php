@@ -44,26 +44,4 @@ class FigureRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Figure[] Returns an array of Figure objects
-//     */
-//    public function findAllRelation(): array
-//    {
-//        return $this->createQueryBuilder('f')
-//             ->select('f')
-//             ->innerJoin('f.id_figure', 'p')
-//             ->getQuery()
-//             ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Figure
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

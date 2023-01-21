@@ -70,9 +70,12 @@
 
                 </div>
 
-                <div class="columns has-text-centered">
+                <div class="columns is-multiline has-text-centered">
                     <div class="column is-12">
                         <button type="submit" class="button">Créer un compte</button>
+                    </div>
+                    <div class="column is-12 is-12-mobile has-text-centered showOnMobile is-flex is-justify-content-center">
+                        <a href="{{ path('app_login') }}">Déjà un compte ?</a>
                     </div>
                 </div>
             {{ form_end(registrationForm) }}

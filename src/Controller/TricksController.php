@@ -39,7 +39,6 @@ class TricksController extends AbstractController
             }
         }
         $userConnected = $this->getUser();
-        // dd($userConnected);
         $url = $request->getPathInfo();
         $fullUrl = $request->getUri();
 

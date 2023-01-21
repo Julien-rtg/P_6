@@ -36,10 +36,10 @@
                             {% endif %}
                         {% endif %}
                     </div>
-                    <div class="column is-12 m-0 p-0">
+                    <div class="column is-12 m-0 p-0 hiddenMobile is-flex is-justify-content-center">
                         <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a> <br>
                     </div>
-                    <div class="column is-12 m-0 p-0">
+                    <div class="column is-12 m-0 p-0 hiddenMobile is-flex is-justify-content-center">
                         <a onclick="openModal('sendMailLogin')">Renvoyer mail de validation de compte</a> <br>
                     </div>
 
@@ -47,6 +47,15 @@
                         <button class="button" type="submit">
                             Se connecter
                         </button>
+                        <div class="column is-12 is-12-mobile has-text-centered showOnMobile is-flex is-justify-content-center pb-0">
+                            <a href="{{ path('app_login') }}">Inscription</a>
+                        </div>
+                        <div class="column is-12 is-12-mobile has-text-centered showOnMobile is-flex is-justify-content-center pb-0 pt-1">
+                            <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+                        </div>
+                        <div class="column is-12 is-12-mobile has-text-centered showOnMobile is-flex is-justify-content-center pt-1">
+                            <a onclick="openModal('sendMailLogin')">Renvoyer mail de validation de compte</a> <br>
+                        </div>
                     </div>
                 </div>
 

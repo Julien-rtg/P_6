@@ -47,12 +47,12 @@ class PhotoFigure
         return $this;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 

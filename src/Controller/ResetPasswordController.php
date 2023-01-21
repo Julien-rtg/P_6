@@ -55,6 +55,9 @@ class ResetPasswordController extends AbstractController
                     $userFind->getEmail(),
                     $mailer
                 );
+            }else { // if there is no user act like there is one
+                $this->addFlash('is-success', 'Un email à été envoyé !');
+                return $this->redirectToRoute('app_login');
             }
         }
 
@@ -164,7 +167,8 @@ class ResetPasswordController extends AbstractController
 
         // Do not reveal whether a user account was found or not.
         if (!$user) {
-            return $this->redirectToRoute('app_check_email');
+            $this->addFlash('is-success', 'Un email à été envoyé !');
+            return $this->redirectToRoute('app_login');
         }
 
         try {
@@ -180,7 +184,8 @@ class ResetPasswordController extends AbstractController
             //     $e->getReason()
             // ));
 
-            return $this->redirectToRoute('app_check_email');
+            $this->addFlash('is-success', 'Un email à été envoyé !');
+            return $this->redirectToRoute('app_login');
         }
 
         $email = (new TemplatedEmail())
@@ -198,6 +203,7 @@ class ResetPasswordController extends AbstractController
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);
 
-        return $this->redirectToRoute('app_check_email');
+        $this->addFlash('is-success', 'Un email à été envoyé !');
+        return $this->redirectToRoute('app_login');
     }
 }
