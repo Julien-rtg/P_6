@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use App\Service\FileUploader;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -67,12 +68,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->figures = new ArrayCollection();
     }
 
-    public function setFile(File $file = null): mixed
+    public function setFile(File $file = null): void
     {
         $this->file = $file;
     }
 
-    public function getFile(): mixed
+    public function getFile(): ?File
     {
         return $this->file;
     }
@@ -266,7 +267,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials(): mixed
+    public function eraseCredentials(): void
     {
 
     }

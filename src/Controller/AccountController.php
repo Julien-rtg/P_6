@@ -18,7 +18,7 @@ class AccountController extends AbstractController
     /**
      * @Route("/account", name="app_account")
      */
-    public function index(Request $request, UtilisateurRepository $utilisateurRepository, ManagerRegistry $doctrine, FileUploader $fileUploader): Response
+    public function index(Request $request, ManagerRegistry $doctrine, FileUploader $fileUploader): Response
     {
         $em = $doctrine->getManager();
 
