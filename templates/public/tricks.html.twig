@@ -39,7 +39,7 @@
 
         {# je boucle sur les videos de mes figures #}
         {% for video in figure.videoFigures %}
-            <div class="videoTrick column is-2-fullhd is-3-desktop is-4-tablet  hiddenMobile toggleShow">
+            <div class="videoTrick column is-2-fullhd is-3-desktop is-4-tablet hiddenMobile toggleShow">
                 <iframe src="{{video.path}}" title="YouTube video player" 
                     frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                 </iframe>

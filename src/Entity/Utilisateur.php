@@ -67,12 +67,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->figures = new ArrayCollection();
     }
 
-    public function setFile(File $file = null)
+    public function setFile(File $file = null): mixed
     {
         $this->file = $file;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -118,11 +118,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // public function getMdp(): ?string
-    // {
-    //     return $this->mdp;
-    // }
-
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -137,11 +132,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    // public function getRoles(): ?int
-    // {
-    //     return $this->role;
-    // }
 
     /**
      * @see UserInterface
@@ -276,10 +266,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): mixed
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+
     }
 
     /**
@@ -292,44 +281,5 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->login;
     }
 
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->nom,
-            $this->prenom,
-            $this->email,
-            $this->mdp,
-            $this->role,
-            $this->login,
-            $this->photo,
-            $this->file,
-            $this->commentaires,
-            $this->figures,
-            $this->is_verified,
-            // see section on salt below
-            // $this->salt,
-        ));
-    }
-
-    public function unserialize($serialized)
-    {
-        list(
-            $this->id,
-            $this->nom,
-            $this->prenom,
-            $this->email,
-            $this->mdp,
-            $this->role,
-            $this->login,
-            $this->photo,
-            $this->file,
-            $this->commentaires,
-            $this->figures,
-            $this->is_verified,
-            // see section on salt below
-            // $this->salt
-        ) = unserialize($serialized);
-    }
 
 }

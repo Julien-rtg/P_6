@@ -54,7 +54,8 @@ class CreateTrickController extends AbstractController
                 $em->flush();
 
                 $files = $figure->getPhotoFigures();
-                for($i = 0; $i<count($files); $i++){
+                $countFiles = count($files);
+                for($i = 0; $i< $countFiles; $i++){
                     if($files[$i] && $files[$i]->getFile()){
                         $attachment = $files[$i]->getFile(); // This is the file
                         $files[$i]->setPath($fileUploader->upload($attachment));
@@ -87,40 +88,42 @@ class CreateTrickController extends AbstractController
         ]);
     }
 
-    private function checkDataForm($datas, FigureRepository $figureRepository, $figure, $form){
-        $error = false;
+    private function checkDataForm(mixed $datas, FigureRepository $figureRepository, mixed $figure, mixed $myForm) : mixed{
+        $errorForm = false;
         $nom = $datas->getNom();
         $res = $figureRepository->findBy(['nom' => $nom]);
 
         if($res){
-            $form->get('nom')->addError(new FormError(''));
-            $error = true;
+            $myForm->get('nom')->addError(new FormError(''));
+            $errorForm = true;
         }
         $videos = $figure->getVideoFigures();
-        for($i = 0; $i < count($videos); $i++){
-            preg_match('/src="([^"]+)"/', $videos[$i]->getPath(), $match);
+        $countVideos = count($videos);
+        for($k = 0; $k < $countVideos; $k++){
+            preg_match('/src="([^"]+)"/', $videos[$k]->getPath(), $match);
             if(!$match){
-                $index = strval($i);
-                $form->get('videoFigures')->addError(new FormError($index));
-                $error = true;
+                $index = strval($k);
+                $myForm->get('videoFigures')->addError(new FormError($index));
+                $errorForm = true;
             }
         }
 
         $photos = $figure->getPhotoFigures();
-        for($j = 0; $j < count($photos); $j++){
-            if ($photos[$j] && $photos[$j]->getFile()) {
-                $ext = $photos[$j]->getFile()->getMimeType();
+        $countPhotos = count($photos);
+        for($i = 0; $i < $countPhotos; $i++){
+            if ($photos[$i] && $photos[$i]->getFile()) {
+                $extension = $photos[$i]->getFile()->getMimeType();
                 
-                if($ext != 'image/jpeg' && $ext !='image/jpg' && $ext != 'image/png'){
-                    $index = strval($j);
-                    $form->get('photoFigures')->addError(new FormError($index));
-                    $error = true;
+                if($extension != 'image/jpeg' && $extension !='image/jpg' && $extension != 'image/png'){
+                    $index = strval($i);
+                    $myForm->get('photoFigures')->addError(new FormError($index));
+                    $errorForm = true;
                 }
 
             }
         }
 
-        if(!$error){
+        if(!$errorForm){
             return true; // si pas d'erreur on accède ici
         }else {
             return false;

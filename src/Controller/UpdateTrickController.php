@@ -120,7 +120,7 @@ class UpdateTrickController extends AbstractController
 
     }
 
-    private function checkDataForm($datas, FigureRepository $figureRepository, $figure, $form, $originalVideos, $originalData)
+    private function checkDataForm(mixed $datas, FigureRepository $figureRepository, mixed $figure, mixed $form, mixed $originalVideos, mixed $originalData): mixed
     {
         $error = false;
         $nom = $datas->getNom();
@@ -134,7 +134,8 @@ class UpdateTrickController extends AbstractController
         }
 
         $videos = $figure->getVideoFigures();
-        for ($i = 0; $i < count($videos); $i++) {
+        $countVideos = count($videos);
+        for ($i = 0; $i < $countVideos; $i++) {
             preg_match('/src="([^"]+)"/', $videos[$i]->getPath(), $match);
             if (!$match) {
                 // si jamais la video de la figure existe et qu'elle est différente de celle en base de données alors on throw l'erreur sinon la valeur est bonne
@@ -151,7 +152,8 @@ class UpdateTrickController extends AbstractController
         }
 
         $photos = $figure->getPhotoFigures();
-        for ($j = 0; $j < count($photos); $j++) {
+        $countPhotos = count($photos);
+        for ($j = 0; $j < $countPhotos; $j++) {
             if($photos[$j] && $photos[$j]->getFile()){
                 $ext = $photos[$j]->getFile()->getMimeType();
                 if ($ext != 'image/jpeg' && $ext != 'image/jpg' && $ext != 'image/png') {

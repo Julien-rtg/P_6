@@ -107,6 +107,10 @@
                 </div>
             {% endfor %}
 
+            <div class="column is-12 showOnMobile is-flex is-justify-content-center">
+                <a class="button showOnMobile" onclick="showMedia()">Afficher les médias</a>
+            </div>
+
             <div class="tagsVideoUpdate columns is-multiline column is-12" data-prototype="{{ form_widget(form.videoFigures.vars.prototype)|e('html_attr') }}"
                 data-index="{{ form.videoFigures|length }}">
             </div>

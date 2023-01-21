@@ -158,22 +158,34 @@
     display: none;
 }
 .showOnMobile{
-    display: none;
+    display: none !important;
 }
 .hiddenMobile {
-    display: flex;
+    display: flex !important;
 }
 @media screen and (max-width: 1500px) {
     .arrowDownHome{
         top: 70%;
+    }
+    .formPadding {
+        width: 40%;
     }
 }
 @media screen and (max-width: 1200px) {
     .arrowDownHome{
         top: 50%;
     }
+    .formPadding {
+        width: 55%;
+    }
 }
 @media screen and (max-width: 768px) {
+    .inputBottomLine{
+        width: 70%;
+    }
+    .formPadding {
+        width: 90%;
+    }
     #loadMore{
         margin-left: 3rem;
     }
@@ -202,13 +214,13 @@
         border-top: 1px solid black;
     }
     .footerDesktop{
-        display: none;
+        display: none !important;
     }
     .hiddenMobile{
-        display: none;
+        display: none !important;
     }
     .showOnMobile{
-        display: flex;
+        display: flex !important;
     }
     .photoTrickSpotlight img{
         height: 500px;
