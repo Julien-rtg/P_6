@@ -136,17 +136,19 @@ class UpdateTrickController extends AbstractController
         $videos = $figure->getVideoFigures();
         $countVideos = count($videos);
         for ($i = 0; $i < $countVideos; $i++) {
-            preg_match('/src="([^"]+)"/', $videos[$i]->getPath(), $match);
-            if (!$match) {
-                // si jamais la video de la figure existe et qu'elle est différente de celle en base de données alors on throw l'erreur sinon la valeur est bonne
-                if(isset($originalVideos[$i]) && $originalVideos[$i] != $videos[$i]->getPath()){
-                    $index = strval($i);
-                    $form->get('videoFigures')->addError(new FormError($index));
-                    $error = true;
-                }else if(!isset($originalVideos[$i])){
-                    $index = strval($i);
-                    $form->get('videoFigures')->addError(new FormError($index));
-                    $error = true;
+            if(isset($videos[$i])){
+                preg_match('/src="([^"]+)"/', $videos[$i]->getPath(), $match);
+                if (!$match) {
+                    // si jamais la video de la figure existe et qu'elle est différente de celle en base de données alors on throw l'erreur sinon la valeur est bonne
+                    if(isset($originalVideos[$i]) && $originalVideos[$i] != $videos[$i]->getPath()){
+                        $index = strval($i);
+                        $form->get('videoFigures')->addError(new FormError($index));
+                        $error = true;
+                    }else if(!isset($originalVideos[$i])){
+                        $index = strval($i);
+                        $form->get('videoFigures')->addError(new FormError($index));
+                        $error = true;
+                    }
                 }
             }
         }

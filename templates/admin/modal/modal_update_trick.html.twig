@@ -81,7 +81,6 @@
             <section class="modal-card-body">
                 <span class="tag is-light mb-2">Veuillez entrer un lien de type embed</span>
                 {{ form_widget(form.videoFigures[(loop.index)-1].path, {'attr' : {'class': 'input', 'placeholder' : 'Video de la figure'}} ) }}
-                {# {{ form_widget(form.videoFigures[(loop.index)-1], {'attr' : {'class': 'input'}} ) }} #}
             </section>
             <footer class="modal-card-foot">
                 <a class="button is-success" onclick="closeModal('modalPreviewVideo{{loop.index-1}}')">Valider</a>
