@@ -108,6 +108,7 @@ class UpdateTrickController extends AbstractController
                 $em->persist($datas); // les données de la figures
                 $em->flush();
                 
+                $this->addFlash('is-success', 'Figure modifié');
                 return $this->redirect($request->getUri()); // refresh
             }
 
