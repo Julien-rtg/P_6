@@ -107,7 +107,15 @@
                     <a class="has-text-black" href="{{ path('home') }}">
                         <i class="fa-solid fa-house fa-3x"></i>
                     </a>
-                    <i class="fa-solid fa-bookmark fa-3x"></i>
+                    {% if app.user %}
+                        <a class="has-text-black" href="{{ path('app_account') }}">
+                            <i class="fa-solid fa-bookmark fa-3x"></i>
+                        </a>
+                    {% else %}
+                        <a class="has-text-black" href="{{ path('app_login') }}">
+                            <i class="fa-solid fa-bookmark fa-3x"></i>
+                        </a>
+                    {% endif %}
                     {% if app.user %}
                         <a class="has-text-black" href="{{ path('app_logout') }}">
                             <i class="fa-solid fa-right-to-bracket fa-3x"></i>
