@@ -39,7 +39,7 @@ class AppFixture extends Fixture
         // $manager->flush();
     }
 
-    public function userLoad($manager)
+    public function userLoad(ObjectManager $manager): void
     {
         $dataUsers = [
             [
@@ -93,7 +93,7 @@ class AppFixture extends Fixture
         $manager->flush();
     }
 
-    public function figureLoad($manager)
+    public function figureLoad(ObjectManager $manager): void
     {
         $dataFigures = [
             [
@@ -209,7 +209,7 @@ class AppFixture extends Fixture
         $manager->flush();
     }
 
-    public function photoFigureLoad($manager)
+    public function photoFigureLoad(ObjectManager $manager): void
     {
         $dataPhotoFigures = [
             [
@@ -274,7 +274,7 @@ class AppFixture extends Fixture
         $manager->flush();
     }
 
-    public function videoFigureLoad($manager)
+    public function videoFigureLoad(ObjectManager $manager): void
     {
         $dataVideoFigures = [
             [
@@ -328,13 +328,13 @@ class AppFixture extends Fixture
         $manager->flush();
     }
 
-    public function commentLoad($manager)
+    public function commentLoad(ObjectManager $manager) : void
     {
         for ($i = 0; $i < 30; $i++) {
 
             $authorRefRandom = rand(0, 2);
             $figRandom = rand(0, 9);
-            $comment = new Commentaire('');
+            $comment = new Commentaire();
             $comment->setContenu('Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l\'imprimerie depuis les années 1500');
             $comment->setDate(new \DateTime());
             $comment->setIdUtilisateur($this->getReference('user_' . $authorRefRandom));
