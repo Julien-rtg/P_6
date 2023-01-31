@@ -23,10 +23,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255, unique: true)]
@@ -38,10 +38,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $mdp = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?array $role = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
     #[ORM\OneToMany(mappedBy: 'id_utilisateur', targetEntity: Commentaire::class)]

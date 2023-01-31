@@ -66,8 +66,9 @@ Rafraîchir la page de phpmyadmin P6 doit apparaitre dans l'aborescence
 
 ### Jouer les migrations pour alimenter la base de données
 
-Tapez la commande dans votre terminal
+Tapez les commande dans votre terminal
 ```bash
+symfony console doctrine:migrate
 symfony console doctrine:migrations:migrate
 ```
 A la question "Êtes-vous sûr de vouloir continuer d'éxecuté la migration dans la base de données "P6" ? répondre oui
@@ -88,7 +89,10 @@ symfony server:start
 
 http://127.0.0.1:8000 ou localhost:8000
 
-3- Pour arrêter le serveur
+3- Veuillez a lancer MailHog que vous avez précédemment installer pour faire fonctionner l'envoi d'email.
+Une fois lancé veuillez aller a l'adresse localhost:8025 pour retrouver vos emails.
+
+4- Pour arrêter le serveur
 
 ```bash
 symfony server:stop
