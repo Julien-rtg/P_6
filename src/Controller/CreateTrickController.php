@@ -69,12 +69,15 @@ class CreateTrickController extends AbstractController
 
                 $videos = $figure->getVideoFigures();
                 foreach ($videos as $vid) {
-                    preg_match('/src="([^"]+)"/', $vid->getPath(), $match);
-                    $url = $match[1];
-                    $vid->setPath($url);
-                    $vid->setIdFigure($figure2);
-                    $em->persist($vid);
+                    if($vid->getPath()){
+                        preg_match('/src="([^"]+)"/', $vid->getPath(), $match);
+                        $url = $match[1];
+                        $vid->setPath($url);
+                        $vid->setIdFigure($figure2);
+                        $em->persist($vid);
+                    }
                 }
+                
                 $em->flush();
 
                 $this->addFlash('is-success', 'Figure ajouté');
@@ -100,13 +103,16 @@ class CreateTrickController extends AbstractController
         $videos = $figure->getVideoFigures();
         $countVideos = count($videos);
         for($k = 0; $k < $countVideos; $k++){
-            preg_match('/src="([^"]+)"/', $videos[$k]->getPath(), $match);
-            if(!$match){
-                $index = strval($k);
-                $myForm->get('videoFigures')->addError(new FormError($index));
-                $errorForm = true;
+            if($videos[$k]->getPath()){
+                preg_match('/src="([^"]+)"/', $videos[$k]->getPath(), $match);
+                if(!$match){
+                    $index = strval($k);
+                    $myForm->get('videoFigures')->addError(new FormError($index));
+                    $errorForm = true;
+                }
             }
         }
+        
 
         $photos = $figure->getPhotoFigures();
         $countPhotos = count($photos);

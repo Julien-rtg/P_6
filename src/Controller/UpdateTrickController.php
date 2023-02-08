@@ -109,7 +109,7 @@ class UpdateTrickController extends AbstractController
                 $em->flush();
                 
                 $this->addFlash('is-success', 'Figure modifié');
-                return $this->redirect($request->getUri()); // refresh
+                return $this->redirect('/');
             }
 
         }

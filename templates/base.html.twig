@@ -53,13 +53,9 @@
                                             </a>
                                         {% endif %}
                                         {% if app.user.roles is defined %}
-                                            {% for role in app.user.roles %}
-                                                {% if role == "ROLE_ADMIN" %}
-                                                    <a class="navbar-item pl-0" href="{{ path('create_trick') }}">
-                                                        Ajout Trick |
-                                                    </a>
-                                                {% endif %}
-                                            {% endfor %}
+                                            <a class="navbar-item pl-0" href="{{ path('create_trick') }}">
+                                                Ajout Trick |
+                                            </a>
                                         {% endif %}
                                         {% if app.user %}
                                             <a class="navbar-item pl-0" href="{{ path('app_account') }}">

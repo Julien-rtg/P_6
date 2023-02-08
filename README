@@ -59,7 +59,7 @@ MAILER_DSN=smtp://localhost:1025
 
 Dans votre terminal
 ```bash
-symfony console doctrine:database:create
+php bin/console doctrine:database:create      
 ```
 Cette commande va créer la base de donnée en récupérant le nom que nous avons donnés dans le fichier .env
 Rafraîchir la page de phpmyadmin P6 doit apparaitre dans l'aborescence
@@ -68,13 +68,16 @@ Rafraîchir la page de phpmyadmin P6 doit apparaitre dans l'aborescence
 
 Tapez les commande dans votre terminal
 ```bash
-symfony console doctrine:migrate
-symfony console doctrine:migrations:migrate
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
 ```
 A la question "Êtes-vous sûr de vouloir continuer d'éxecuté la migration dans la base de données "P6" ? répondre oui
 
 Rafraichir la page de phpmyadmin, la liste des tables doit apparaître dans la base de donnée.
 
+### Chargement des fixtures
+
+php bin/console doctrine:fixtures:load        
 
 ### Chargement de l'application
 
@@ -92,7 +95,11 @@ http://127.0.0.1:8000 ou localhost:8000
 3- Veuillez a lancer MailHog que vous avez précédemment installer pour faire fonctionner l'envoi d'email.
 Une fois lancé veuillez aller a l'adresse localhost:8025 pour retrouver vos emails.
 
-4- Pour arrêter le serveur
+4- Vous pouvez vous connecter avec :
+    le nom d'utilisateur : admin 
+    mot de passe : mdp123
+
+5- Pour arrêter le serveur
 
 ```bash
 symfony server:stop
